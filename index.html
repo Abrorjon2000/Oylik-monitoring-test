@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ustoz Pro | Full Academic</title>
+    <title>Ustoz Pro | Cloud v14.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
@@ -16,18 +15,18 @@
         .admin-nav { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .tab-btn { flex: 1; padding: 12px; border-radius: 12px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-weight: 700; cursor: pointer; min-width: 120px; }
         .tab-btn.active { background: var(--primary); color: white; }
-        input, select, textarea { width: 100%; padding: 12px; border: 2px solid #f1f5f9; border-radius: 12px; font-size: 15px; margin-top: 5px; font-family: inherit; }
+        input, select, textarea { width: 100%; padding: 12px; border: 2px solid #f1f5f9; border-radius: 12px; font-size: 15px; margin-top: 5px; font-family: inherit; box-sizing: border-box; }
         .btn { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn-sync { background: #8b5cf6; margin-bottom: 15px; }
         .btn-success { background: var(--success); }
         .btn-danger { background: var(--secondary); }
         .q-card { background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid #edf2f7; margin-bottom: 15px; }
-        .option-label { display: flex; align-items: center; padding: 14px; background: white; border: 2px solid #f1f5f9; border-radius: 12px; margin: 10px 0; cursor: pointer; transition: 0.2s; }
-        .option-label:hover { border-color: var(--primary); background: #f5f3ff; }
-        .option-label input { width: 20px; height: 20px; margin-right: 12px; accent-color: var(--primary); }
+        .option-label { display: flex; align-items: center; padding: 14px; background: white; border: 2px solid #f1f5f9; border-radius: 12px; margin: 10px 0; cursor: pointer; }
         #timer { font-size: 32px; font-weight: 800; color: var(--secondary); text-align: center; margin-bottom: 10px; }
         .hidden { display: none; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; border-bottom: 1px solid #f1f5f9; text-align: left; }
+        th, td { padding: 12px; border-bottom: 1px solid #f1f5f9; text-align: left; font-size: 14px; }
+        .sync-info { font-size: 12px; color: #64748b; text-align: center; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -68,30 +67,29 @@
 
     <div id="admin-panel" class="hidden">
         <div class="admin-nav">
-            <button class="tab-btn active" onclick="switchTab(event, 'tab-setup')">Test Yuklash</button>
+            <button class="tab-btn active" onclick="switchTab(event, 'tab-setup')">Boshqaruv</button>
             <button class="tab-btn" onclick="switchTab(event, 'tab-results')">Natijalar</button>
             <button class="btn-danger tab-btn" style="border:none" onclick="location.reload()">Chiqish</button>
         </div>
 
         <div id="tab-setup" class="tab-content">
             <div class="glass-card">
-                <h3>Yangi Test Yuklash</h3>
-                <label>Sinf</label>
+                <h3>Bulutli Yangilash (Google Sheets)</h3>
+                <p style="font-size:13px; color:#64748b;">Jadvalga yangi testlar qo'shgan bo'lsangiz, tugmani bosing:</p>
+                <button class="btn btn-sync" onclick="syncWithCloud()">Google Sheets'dan yuklash</button>
+                <div id="sync-status" class="sync-info">Oxirgi yangilanish: ---</div>
+                <hr style="border:1px solid #f1f5f9; margin: 20px 0;">
+                <h3>Qo'lda test yuklash</h3>
                 <select id="adm-sel-cls" onchange="updateAdmSubjects()"></select>
-                <label>Fan</label>
                 <select id="adm-sub-name"></select>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <div style="flex:1"><label>Vaqt (daqiqada)</label><input type="number" id="adm-time" value="20"></div>
-                    <div style="flex:1"><label>Savollar soni (limit)</label><input type="number" id="adm-limit" value="15"></div>
-                </div>
-                <textarea id="adm-qs-raw" rows="8" style="margin-top:10px" placeholder="Savol|A|B|C|D|javob(a,b,c yoki d)"></textarea>
-                <button class="btn btn-success" onclick="saveQuestions()">Testni Saqlash</button>
+                <textarea id="adm-qs-raw" rows="5" style="margin-top:10px" placeholder="Savol|A|B|C|D|javob"></textarea>
+                <button class="btn" onclick="saveQuestions()">Saqlash</button>
             </div>
         </div>
 
         <div id="tab-results" class="tab-content hidden">
             <div id="pdf-area" class="glass-card">
-                <h3>Imtihon Natijalari (Barcha fanlar)</h3>
+                <h3>Imtihon Natijalari</h3>
                 <table id="res-table">
                     <thead><tr><th>Ism</th><th>Sinf</th><th>Fan</th><th>Ball</th><th>Sana</th></tr></thead>
                     <tbody id="res-body"></tbody>
@@ -103,8 +101,10 @@
 </div>
 
 <script>
+    // --- KONFIGURATSIYA ---
     const TG_TOKEN = "1BzmrjmKPKSR2hH5BeJySfiVA676E8DYaK"; 
     const TG_CHAT_ID = "727716224";
+    const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT80cxkCgcYdA0OqUOTkrLHeq-wp5MU29ullRUnuTX8L5IM3F3GIxdLtgbJxFrt18unljnQgdaoyarJ/pub?output=csv";
 
     const STATIC_DATA = {
         students: {
@@ -121,21 +121,55 @@
         }
     };
 
-    let db = JSON.parse(localStorage.getItem('ustoz_pro_v13_1')) || { 
-        classes: {}, 
-        results: [] 
-    };
+    let db = JSON.parse(localStorage.getItem('ustoz_pro_v14')) || { classes: {}, results: [], lastSync: "---" };
 
-    function save() { localStorage.setItem('ustoz_pro_v13_1', JSON.stringify(db)); }
+    function save() { localStorage.setItem('ustoz_pro_v14', JSON.stringify(db)); }
 
+    // --- BULUT BILAN SINXRONIZATSIYA ---
+    async function syncWithCloud() {
+        try {
+            const res = await fetch(SHEET_URL);
+            const csv = await res.text();
+            const lines = csv.split('\n').slice(1);
+            
+            db.classes = {}; // Eskilarini tozalab yangilaym3z
+            
+            lines.forEach(line => {
+                const parts = line.split(',');
+                if(parts.length >= 8) {
+                    const sinf = parts[0].trim();
+                    const fan = parts[1].trim();
+                    const savol = parts[2].trim();
+                    const a = parts[3].trim();
+                    const b = parts[4].trim();
+                    const c = parts[5].trim();
+                    const d = parts[6].trim();
+                    const javob = parts[7].trim().toLowerCase();
+                    const vaqt = parseInt(parts[8]) || 20;
+                    const limit = parseInt(parts[9]) || 15;
+
+                    if(!db.classes[sinf]) db.classes[sinf] = {};
+                    if(!db.classes[sinf][fan]) db.classes[sinf][fan] = { qs: [], time: vaqt, limit: limit };
+                    
+                    db.classes[sinf][fan].qs.push({ q: savol, a, b, c, d, cr: javob });
+                }
+            });
+
+            db.lastSync = new Date().toLocaleString('uz-UZ');
+            save();
+            document.getElementById('sync-status').innerText = "Oxirgi yangilanish: " + db.lastSync;
+            alert("Google Sheets'dan hamma testlar yuklandi!");
+        } catch (e) {
+            alert("Xatolik! Internetni yoki URL manzilni tekshiring.");
+        }
+    }
+
+    // --- TEST LOGIKASI ---
     function updateStudentsAndSubjects() {
         const cls = document.getElementById('sClass').value;
-        const sn = document.getElementById('sName');
-        const ss = document.getElementById('sSub');
-        
-        sn.innerHTML = '<option value="">O\'quvchini tanlang...</option>';
-        ss.innerHTML = '<option value="">Fanni tanlang...</option>';
-
+        const sn = document.getElementById('sName'), ss = document.getElementById('sSub');
+        sn.innerHTML = '<option value="">O\'quvchi...</option>';
+        ss.innerHTML = '<option value="">Fan...</option>';
         if(cls) {
             STATIC_DATA.students[cls].forEach(s => sn.innerHTML += `<option value="${s}">${s}</option>`);
             STATIC_DATA.subjects[cls].forEach(sub => ss.innerHTML += `<option value="${sub}">${sub}</option>`);
@@ -146,36 +180,14 @@
         const cls = document.getElementById('adm-sel-cls').value;
         const asub = document.getElementById('adm-sub-name');
         asub.innerHTML = '';
-        if(cls) {
-            STATIC_DATA.subjects[cls].forEach(sub => asub.innerHTML += `<option value="${sub}">${sub}</option>`);
-        }
-    }
-
-    function saveQuestions() {
-        const cls = document.getElementById('adm-sel-cls').value;
-        const sub = document.getElementById('adm-sub-name').value;
-        const time = document.getElementById('adm-time').value;
-        const limit = document.getElementById('adm-limit').value;
-        const qs = document.getElementById('adm-qs-raw').value.split('\n').map(l => {
-            const [q,a,b,c,d,cr] = l.split('|');
-            return {q, a, b, c, d, cr: cr?.trim().toLowerCase()};
-        }).filter(x => x.q);
-
-        if(!db.classes[cls]) db.classes[cls] = {};
-        db.classes[cls][sub] = { qs, time: parseInt(time), limit: parseInt(limit) }; 
-        save(); alert(`${cls} uchun ${sub} fani testlari saqlandi!`);
+        if(cls) STATIC_DATA.subjects[cls].forEach(sub => asub.innerHTML += `<option value="${sub}">${sub}</option>`);
     }
 
     let currentQs = [], timer;
     function startTest() {
-        const cls = document.getElementById('sClass').value;
-        const sub = document.getElementById('sSub').value;
-        const name = document.getElementById('sName').value;
-
-        if(!cls || !sub || !name) return alert("Barcha maydonlarni tanlang!");
-        if(!db.classes[cls] || !db.classes[cls][sub] || db.classes[cls][sub].qs.length === 0) {
-            return alert("Ushbu fan uchun hali test yuklanmagan!");
-        }
+        const cls = document.getElementById('sClass').value, sub = document.getElementById('sSub').value, name = document.getElementById('sName').value;
+        if(!cls || !sub || !name) return alert("Tanlang!");
+        if(!db.classes[cls] || !db.classes[cls][sub]) return alert("Test yuklanmagan!");
 
         const conf = db.classes[cls][sub];
         currentQs = [...conf.qs].sort(() => 0.5 - Math.random()).slice(0, conf.limit).map(q => {
@@ -185,7 +197,6 @@
 
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('test-screen').classList.remove('hidden');
-
         const area = document.getElementById('questions-area'); area.innerHTML = '';
         currentQs.forEach((q, i) => {
             let optsHtml = q.mixed.map(o => `<label class="option-label"><input type="radio" name="q${i}" value="${o.k}"> ${o.v}</label>`).join('');
@@ -208,24 +219,16 @@
             if(ans && ans.value === q.cr) score++;
         });
 
-        const res = { 
-            name: document.getElementById('sName').value, 
-            cls: document.getElementById('sClass').value, 
-            sub: document.getElementById('sSub').value, 
-            score, total: currentQs.length, 
-            date: new Date().toLocaleString('uz-UZ') 
-        };
-
+        const res = { name: document.getElementById('sName').value, cls: document.getElementById('sClass').value, sub: document.getElementById('sSub').value, score, total: currentQs.length, date: new Date().toLocaleString('uz-UZ') };
         db.results.push(res); save();
         document.getElementById('test-screen').classList.add('hidden');
         document.getElementById('result-screen').classList.remove('hidden');
-        document.getElementById('res-student-name').innerText = res.name;
         document.getElementById('res-score').innerText = `${score}/${res.total}`;
 
         fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: `📊 NATIJA\n👤 O'quvchi: ${res.name}\n🏫 Sinf: ${res.cls}\n📚 Fan: ${res.sub}\n✅ Ball: ${score}/${res.total}\n📅 Sana: ${res.date}` })
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: `📊 NATIJA\n👤 O'quvchi: ${res.name}\n🏫 Sinf: ${res.cls}\n📚 Fan: ${res.sub}\n✅ Ball: ${score}/${res.total}` })
         });
     }
 
@@ -234,21 +237,19 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.remove('hidden');
         e.target.classList.add('active');
-
         if(id === 'tab-results') {
             const body = document.getElementById('res-body'); body.innerHTML = '';
-            db.results.slice().reverse().forEach(r => {
-                body.innerHTML += `<tr><td>${r.name}</td><td>${r.cls}</td><td>${r.sub}</td><td>${r.score}/${r.total}</td><td>${r.date}</td></tr>`;
-            });
+            db.results.slice().reverse().forEach(r => body.innerHTML += `<tr><td>${r.name}</td><td>${r.cls}</td><td>${r.sub}</td><td>${r.score}/${r.total}</td><td>${r.date}</td></tr>`);
         }
         if(id === 'tab-setup') {
+            document.getElementById('sync-status').innerText = "Oxirgi yangilanish: " + db.lastSync;
             const ac = document.getElementById('adm-sel-cls');
-            ac.innerHTML = '<option value="">Sinfni tanlang...</option>';
+            ac.innerHTML = '<option value="">Sinf...</option>';
             Object.keys(STATIC_DATA.students).forEach(c => ac.innerHTML += `<option value="${c}">${c}</option>`);
         }
     }
 
-    function downloadPDF() { html2pdf().from(document.getElementById('pdf-area')).save('Imtihon_Natijalari.pdf'); }
+    function downloadPDF() { html2pdf().from(document.getElementById('pdf-area')).save('Natijalar.pdf'); }
     function goAdmin() { if(prompt("Parol:") === "admin123") { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('admin-panel').classList.remove('hidden'); } }
 </script>
 </body>
