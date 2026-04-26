@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ustoz Pro | Full Academic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        :root { --primary: #4f46e5; --secondary: #f43f5e; --success: #10b981; --bg: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #1e293b; }
+        .container { max-width: 900px; margin: auto; }
+        .glass-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .admin-nav { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-weight: 700; cursor: pointer; min-width: 120px; }
+        .tab-btn.active { background: var(--primary); color: white; }
+        input, select, textarea { width: 100%; padding: 12px; border: 2px solid #f1f5f9; border-radius: 12px; font-size: 15px; margin-top: 5px; font-family: inherit; }
+        .btn { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn-success { background: var(--success); }
+        .btn-danger { background: var(--secondary); }
+        .q-card { background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid #edf2f7; margin-bottom: 15px; }
+        .option-label { display: flex; align-items: center; padding: 14px; background: white; border: 2px solid #f1f5f9; border-radius: 12px; margin: 10px 0; cursor: pointer; transition: 0.2s; }
+        .option-label:hover { border-color: var(--primary); background: #f5f3ff; }
+        .option-label input { width: 20px; height: 20px; margin-right: 12px; accent-color: var(--primary); }
+        #timer { font-size: 32px; font-weight: 800; color: var(--secondary); text-align: center; margin-bottom: 10px; }
+        .hidden { display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; border-bottom: 1px solid #f1f5f9; text-align: left; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="login-screen" class="glass-card">
+        <h1 style="text-align: center; color: var(--primary);">Ustoz Pro</h1>
+        <div style="display: grid; gap: 15px;">
+            <div><label>Sinfni tanlang</label>
+                <select id="sClass" onchange="updateStudentsAndSubjects()">
+                    <option value="">Tanlang...</option>
+                    <option value="5-sinf">5-sinf</option>
+                    <option value="6-sinf">6-sinf</option>
+                    <option value="7-sinf">7-sinf</option>
+                    <option value="8-sinf">8-sinf</option>
+                </select>
+            </div>
+            <div><label>Ismingizni tanlang</label><select id="sName"></select></div>
+            <div><label>Fanni tanlang</label><select id="sSub"></select></div>
+            <button class="btn" onclick="startTest()">Testni Boshlash</button>
+        </div>
+        <p onclick="goAdmin()" style="text-align:center; color:#cbd5e1; cursor:pointer; font-size:11px; margin-top:30px;">TIZIM SOZLAMALARI</p>
+    </div>
+
+    <div id="test-screen" class="hidden">
+        <div class="glass-card">
+            <div id="timer">00:00</div>
+            <div id="questions-area"></div>
+            <button class="btn btn-success" onclick="finishTest()">Testni Yakunlash</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="hidden glass-card" style="text-align:center">
+        <h2 id="res-student-name"></h2>
+        <div id="res-score" style="font-size: 80px; font-weight: 900; color: var(--success); margin: 15px 0;">0/0</div>
+        <button class="btn" onclick="location.reload()">Chiqish</button>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+        <div class="admin-nav">
+            <button class="tab-btn active" onclick="switchTab(event, 'tab-setup')">Test Yuklash</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-results')">Natijalar</button>
+            <button class="btn-danger tab-btn" style="border:none" onclick="location.reload()">Chiqish</button>
+        </div>
+
+        <div id="tab-setup" class="tab-content">
+            <div class="glass-card">
+                <h3>Yangi Test Yuklash</h3>
+                <label>Sinf</label>
+                <select id="adm-sel-cls" onchange="updateAdmSubjects()"></select>
+                <label>Fan</label>
+                <select id="adm-sub-name"></select>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <div style="flex:1"><label>Vaqt (daqiqada)</label><input type="number" id="adm-time" value="20"></div>
+                    <div style="flex:1"><label>Savollar soni (limit)</label><input type="number" id="adm-limit" value="15"></div>
+                </div>
+                <textarea id="adm-qs-raw" rows="8" style="margin-top:10px" placeholder="Savol|A|B|C|D|javob(a,b,c yoki d)"></textarea>
+                <button class="btn btn-success" onclick="saveQuestions()">Testni Saqlash</button>
+            </div>
+        </div>
+
+        <div id="tab-results" class="tab-content hidden">
+            <div id="pdf-area" class="glass-card">
+                <h3>Imtihon Natijalari (Barcha fanlar)</h3>
+                <table id="res-table">
+                    <thead><tr><th>Ism</th><th>Sinf</th><th>Fan</th><th>Ball</th><th>Sana</th></tr></thead>
+                    <tbody id="res-body"></tbody>
+                </table>
+            </div>
+            <button class="btn btn-success" onclick="downloadPDF()">Natijalarni PDF qilish</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const TG_TOKEN = "1BzmrjmKPKSR2hH5BeJySfiVA676E8DYaK"; 
+    const TG_CHAT_ID = "727716224";
+
+    const STATIC_DATA = {
+        students: {
+            "5-sinf": ["Yo‘ldoshaliyev Abdulahad", "Nabijonova Sitora", "Abdumutaliyeva Asalxon", "Usmonxo‘jayeva Diyoraxon", "Bekmirzayev Otabek", "Hakimjonov Hamidullo", "Rustamova Malikaxon", "Usmonaliyev Alisher", "Musajonov Hojimurod", "Alijonov Islombek", "Imomova Xushnoza", "Nu‘monova Madina", "Sobirov Muhammadbobur", "Zuxriddinova Yasminaxon", "Inomjonov Ibrohim", "Bannonov Abdulloh", "Saidmo'minova Muhsinaxon", "Muhammadolimov Fahriddin", "Odiljonova Muslimaxon"],
+            "6-sinf": ["Nosirjonova Layloxon", "Muhammadaliyeva Sevaraxon", "Mamasoliyeva Hadicha", "To‘lqinjonova Shahzoda", "Mamasoliyeva Mubina", "Qo‘shoqboyev Muhammadaziz", "Mansurjonov Hojakbar", "Soliyev Shamsiddin", "G‘ulomjonov Muhammaddiyor", "Soliyev Ziyovuddin", "Rustamjonova Rayxona", "Alijonov Anasxon", "Yusufjonova Fotimaxon", "Mamadnosirov G'olibjon", "Odiljonova Salomatxon", "Abdulazizova Nozimaxon"],
+            "7-sinf": ["Yo'ldoshaliyeva Farzona", "Abdullayev Muslimbek", "Adhamov Jahongir", "Muxtorov Abdulloh", "Adhamjonov Muhammadyusuf", "Ergashboyev Abdulloh", "Abdumutalov Abdulbosit", "Akramjonov Murodillo", "Ashuraliyev Ilhomjon", "Omonaliyev Muhammad", "Bahodirov Saidabror", "Alijonov Mus'ab", "Kamoliddinov Shamshodbek", "Bahriddinov Muhammadjon", "Nuraliyev Muhammadyasin", "Xoshimjonov Dovudbek", "Ibrohimov Islomjon"],
+            "8-sinf": ["Rustamova Mushtariy", "Usmonaliyev Sanjarbek", "Zokirjonova Zahroxon", "Nurmatova Mohinabonu", "Mamasoliyeva Arofatxon", "Mirzajonov Fayzulloh", "Zafarjonov Behruzbek", "Oʻlmasova Mohichehra", "Valijonova Zeboxon", "Lazizxonova Oyshabonu", "Tursunov Aliy", "Qodirov Bobomurod", "Inomjonova Umidaxon", "Ortiqboyeva Malikaxon", "Adhamjonov Muhammadsaid", "Qodirova Sarvinoz", "Abdulazizov Mashrabbek"]
+        },
+        subjects: {
+            "5-sinf": ["Tarix", "Turk tili"],
+            "6-sinf": ["Tarix", "Turk tili"],
+            "7-sinf": ["Tarix", "Turk tili", "Geografiya"],
+            "8-sinf": ["Tarix", "Turk tili", "Geografiya"]
+        }
+    };
+
+    let db = JSON.parse(localStorage.getItem('ustoz_pro_v13_1')) || { 
+        classes: {}, 
+        results: [] 
+    };
+
+    function save() { localStorage.setItem('ustoz_pro_v13_1', JSON.stringify(db)); }
+
+    function updateStudentsAndSubjects() {
+        const cls = document.getElementById('sClass').value;
+        const sn = document.getElementById('sName');
+        const ss = document.getElementById('sSub');
+        
+        sn.innerHTML = '<option value="">O\'quvchini tanlang...</option>';
+        ss.innerHTML = '<option value="">Fanni tanlang...</option>';
+
+        if(cls) {
+            STATIC_DATA.students[cls].forEach(s => sn.innerHTML += `<option value="${s}">${s}</option>`);
+            STATIC_DATA.subjects[cls].forEach(sub => ss.innerHTML += `<option value="${sub}">${sub}</option>`);
+        }
+    }
+
+    function updateAdmSubjects() {
+        const cls = document.getElementById('adm-sel-cls').value;
+        const asub = document.getElementById('adm-sub-name');
+        asub.innerHTML = '';
+        if(cls) {
+            STATIC_DATA.subjects[cls].forEach(sub => asub.innerHTML += `<option value="${sub}">${sub}</option>`);
+        }
+    }
+
+    function saveQuestions() {
+        const cls = document.getElementById('adm-sel-cls').value;
+        const sub = document.getElementById('adm-sub-name').value;
+        const time = document.getElementById('adm-time').value;
+        const limit = document.getElementById('adm-limit').value;
+        const qs = document.getElementById('adm-qs-raw').value.split('\n').map(l => {
+            const [q,a,b,c,d,cr] = l.split('|');
+            return {q, a, b, c, d, cr: cr?.trim().toLowerCase()};
+        }).filter(x => x.q);
+
+        if(!db.classes[cls]) db.classes[cls] = {};
+        db.classes[cls][sub] = { qs, time: parseInt(time), limit: parseInt(limit) }; 
+        save(); alert(`${cls} uchun ${sub} fani testlari saqlandi!`);
+    }
+
+    let currentQs = [], timer;
+    function startTest() {
+        const cls = document.getElementById('sClass').value;
+        const sub = document.getElementById('sSub').value;
+        const name = document.getElementById('sName').value;
+
+        if(!cls || !sub || !name) return alert("Barcha maydonlarni tanlang!");
+        if(!db.classes[cls] || !db.classes[cls][sub] || db.classes[cls][sub].qs.length === 0) {
+            return alert("Ushbu fan uchun hali test yuklanmagan!");
+        }
+
+        const conf = db.classes[cls][sub];
+        currentQs = [...conf.qs].sort(() => 0.5 - Math.random()).slice(0, conf.limit).map(q => {
+            let opts = [{k:'a', v:q.a}, {k:'b', v:q.b}, {k:'c', v:q.c}, {k:'d', v:q.d}].sort(() => 0.5 - Math.random());
+            return { ...q, mixed: opts };
+        });
+
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('test-screen').classList.remove('hidden');
+
+        const area = document.getElementById('questions-area'); area.innerHTML = '';
+        currentQs.forEach((q, i) => {
+            let optsHtml = q.mixed.map(o => `<label class="option-label"><input type="radio" name="q${i}" value="${o.k}"> ${o.v}</label>`).join('');
+            area.innerHTML += `<div class="q-card"><p><b>${i+1}. ${q.q}</b></p>${optsHtml}</div>`;
+        });
+
+        let t = conf.time * 60;
+        timer = setInterval(() => {
+            let m = Math.floor(t/60), s = t%60;
+            document.getElementById('timer').innerText = `${m}:${s<10?'0'+s:s}`;
+            if(--t < 0) finishTest();
+        }, 1000);
+    }
+
+    async function finishTest() {
+        clearInterval(timer);
+        let score = 0;
+        currentQs.forEach((q, i) => {
+            const ans = document.querySelector(`input[name="q${i}"]:checked`);
+            if(ans && ans.value === q.cr) score++;
+        });
+
+        const res = { 
+            name: document.getElementById('sName').value, 
+            cls: document.getElementById('sClass').value, 
+            sub: document.getElementById('sSub').value, 
+            score, total: currentQs.length, 
+            date: new Date().toLocaleString('uz-UZ') 
+        };
+
+        db.results.push(res); save();
+        document.getElementById('test-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('res-student-name').innerText = res.name;
+        document.getElementById('res-score').innerText = `${score}/${res.total}`;
+
+        fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: `📊 NATIJA\n👤 O'quvchi: ${res.name}\n🏫 Sinf: ${res.cls}\n📚 Fan: ${res.sub}\n✅ Ball: ${score}/${res.total}\n📅 Sana: ${res.date}` })
+        });
+    }
+
+    function switchTab(e, id) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.remove('hidden');
+        e.target.classList.add('active');
+
+        if(id === 'tab-results') {
+            const body = document.getElementById('res-body'); body.innerHTML = '';
+            db.results.slice().reverse().forEach(r => {
+                body.innerHTML += `<tr><td>${r.name}</td><td>${r.cls}</td><td>${r.sub}</td><td>${r.score}/${r.total}</td><td>${r.date}</td></tr>`;
+            });
+        }
+        if(id === 'tab-setup') {
+            const ac = document.getElementById('adm-sel-cls');
+            ac.innerHTML = '<option value="">Sinfni tanlang...</option>';
+            Object.keys(STATIC_DATA.students).forEach(c => ac.innerHTML += `<option value="${c}">${c}</option>`);
+        }
+    }
+
+    function downloadPDF() { html2pdf().from(document.getElementById('pdf-area')).save('Imtihon_Natijalari.pdf'); }
+    function goAdmin() { if(prompt("Parol:") === "admin123") { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('admin-panel').classList.remove('hidden'); } }
+</script>
+</body>
+</html>
