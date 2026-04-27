@@ -51,7 +51,6 @@
                 <option value="6-sinf">6-sinf</option>
                 <option value="7-sinf">7-sinf</option>
                 <option value="8-sinf">8-sinf</option>
-                <option value="Yuqori sinf">Yuqori sinf</option>
             </select>
             <select id="sName"><option value="">-- O'quvchi ismi --</option></select>
             <select id="sSub"><option value="">-- Fan yo'nalishi --</option></select>
@@ -105,6 +104,138 @@
 
 <script>
     // --- TO'G'IRLANGAN MA'LUMOTLAR ---
+    const TG_TOKEN = "1236509656:AAH8lsLDpQ-4r5f2ZuHXxVEigrfMqdlbz9g"; 
+    const TG_CHAT_ID = "727716224"; 
+    const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT80cxkCgcYdA0OqUOTkrLHeq-wp5MU29ullRUnuTX8L5IM3F3GIxdLtgbJxFrt18unljnQgdaoyarJ/pub?output=csv";
+
+    const STATIC_DATA = {
+        students: {
+            "5-sinf": ["Yo‘ldoshaliyev Abdulahad", "Nabijonova Sitora", "Abdumutaliyeva Asalxon", "Usmonxo‘jayeva Diyoraxon", "Bekmirzayev Otabek", "Hakimjonov Hamidullo", "Rustamova Malikaxon", "Usmonaliyev Alisher", "Musajonov Hojimurod", "Alijonov Islombek", "Imomova Xushnoza", "Nu‘monova Madina", "Sobirov Muhammadbobur", "Zuxriddinova Yasminaxon", "Inomjonov Ibrohim", "Bannonov Abdulloh", "Saidmo'minova Muhsinaxon", "Muhammadolimov Fahriddin", "Odiljonova Muslimaxon"],
+            "6-sinf": ["Nosirjonova Layloxon", "Muhammadaliyeva Sevaraxon", "Mamasoliyeva Hadicha", "To‘lqinjonova Shahzoda", "Mamasoliyeva Mubina", "Qo‘shoqboyev Muhammadaziz", "Mansurjonov Hojakbar", "Soliyev Shamsiddin", "G‘ulomjonov Muhammaddiyor", "Soliyev Ziyovuddin", "Rustamjonova Rayxona", "Alijonov Anasxon", "Yusufjonova Fotimaxon", "Mamadnosirov G'olibjon", "Odiljonova Salomatxon", "Abdulazizova Nozimaxon"],
+            "7-sinf": ["Yo'ldoshaliyeva Farzona", "Abdullayev Muslimbek", "Adhamov Jahongir", "Muxtorov Abdulloh", "Adhamjonov Muhammadyusuf", "Ergashboyev Abdulloh", "Abdumutalov Abdulbosit", "Akramjonov Murodillo", "Ashuraliyev Ilhomjon", "Omonaliyev Muhammad", "Bahodirov Saidabror", "Alijonov Mus'ab", "Kamoliddinov Shamshodbek", "Bahriddinov Muhammadjon", "Nuraliyev Muhammadyasin", "Xoshimjonov Dovudbek", "Ibrohimov Islomjon"],
+            "8-sinf": ["Rustamova Mushtariy", "Usmonaliyev Sanjarbek", "Zokirjonova Zahroxon", "Nurmatova Mohinabonu", "Mamasoliyeva Arofatxon", "Mirzajonov Fayzulloh", "Zafarjonov Behruzbek", "Oʻlmasova Mohichehra", "Valijonova Zeboxon", "Lazizxonova Oyshabonu", "Tursunov Aliy", "Qodirov Bobomurod", "Inomjonova Umidaxon", "Ortiqboyeva Malikaxon", "Adhamjonov Muhammadsaid", "Qodirova Sarvinoz", "Abdulazizov Mashrabbek"]
+        },
+        subjects: {
+            "5-sinf": ["Tarix", "Turk tili"],
+            "6-sinf": ["Tarix", "Turk tili"],
+            "7-sinf": ["Tarix", "Turk tili", "Geografiya"],
+            "8-sinf": ["Tarix", "Turk tili", "Geografiya"]
+        }
+    };
+
+    let db = JSON.parse(localStorage.getItem('ustoz_pro_v17')) || { classes: {}, results: [], lastSync: "---" };
+    function save() { localStorage.setItem('ustoz_pro_v17', JSON.stringify(db)); }
+
+    function updateStudentsAndSubjects() {
+        const cls = document.getElementById('sClass').value;
+        const sn = document.getElementById('sName'), ss = document.getElementById('sSub');
+        sn.innerHTML = '<option value="">-- O\'quvchi --</option>';
+        ss.innerHTML = '<option value="">-- Fan --</option>';
+        if(cls) {
+            STATIC_DATA.students[cls].forEach(s => sn.innerHTML += `<option value="${s}">${s}</option>`);
+            STATIC_DATA.subjects[cls].forEach(sub => ss.innerHTML += `<option value="${sub}">${sub}</option>`);
+        }
+    }
+
+    function showAdminLogin() { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('admin-login').classList.remove('hidden'); }
+    function checkAdmin() {
+        if(document.getElementById('admin-pass').value === "admin123") {
+            document.getElementById('admin-login').classList.add('hidden');
+            document.getElementById('admin-panel').classList.remove('hidden');
+            document.getElementById('last-update').innerText = "Yangilanish: " + db.lastSync;
+        } else { alert("Xato parol!"); }
+    }
+
+    async function syncWithCloud() {
+        const btn = document.querySelector('.btn-sync');
+        btn.innerText = "Yuklanmoqda...";
+        try {
+            const res = await fetch(SHEET_URL);
+            const csv = await res.text();
+            const lines = csv.split('\n').slice(1);
+            db.classes = {};
+            lines.forEach(line => {
+                const p = line.split(',');
+                if(p.length >= 8) {
+                    const sinf = p[0].trim(), fan = p[1].trim();
+                    if(!db.classes[sinf]) db.classes[sinf] = {};
+                    if(!db.classes[sinf][fan]) db.classes[sinf][fan] = { qs: [], time: parseInt(p[8])||20, limit: parseInt(p[9])||15 };
+                    db.classes[sinf][fan].qs.push({ q:p[2].trim(), a:p[3].trim(), b:p[4].trim(), c:p[5].trim(), d:p[6].trim(), cr:p[7].trim().toLowerCase() });
+                }
+            });
+            db.lastSync = new Date().toLocaleString(); save();
+            alert("Muvaffaqiyatli yangilandi!"); location.reload();
+        } catch (e) { alert("Xatolik! Google Sheets havolasini tekshiring."); btn.innerText = "Google Sheets'dan yuklash"; }
+    }
+
+    let currentQs = [], timer;
+    function startTest() {
+        const cls = document.getElementById('sClass').value, sub = document.getElementById('sSub').value, name = document.getElementById('sName').value;
+        if(!cls || !sub || !name) return alert("Hamma maydonlarni tanlang!");
+        if(!db.classes[cls] || !db.classes[cls][sub]) return alert("Ushbu fan uchun testlar yuklanmagan!");
+
+        const conf = db.classes[cls][sub];
+        currentQs = [...conf.qs].sort(() => 0.5 - Math.random()).slice(0, conf.limit).map(q => {
+            let opts = [{k:'a', v:q.a}, {k:'b', v:q.b}, {k:'c', v:q.c}, {k:'d', v:q.d}].sort(() => 0.5 - Math.random());
+            return { ...q, mixed: opts };
+        });
+
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('test-screen').classList.remove('hidden');
+        const area = document.getElementById('questions-area'); area.innerHTML = '';
+        currentQs.forEach((q, i) => {
+            let optsHtml = q.mixed.map(o => `<label class="option-label"><input type="radio" name="q${i}" value="${o.k}"> <span>${o.v}</span></label>`).join('');
+            area.innerHTML += `<div class="q-card"><div class="q-text">${i+1}. ${q.q}</div>${optsHtml}</div>`;
+        });
+
+        let t = conf.time * 60;
+        timer = setInterval(() => {
+            let m = Math.floor(t/60), s = t%60;
+            document.getElementById('timer').innerText = `${m}:${s<10?'0'+s:s}`;
+            if(--t < 0) finishTest();
+        }, 1000);
+    }
+
+    async function finishTest() {
+        clearInterval(timer);
+        let score = 0;
+        currentQs.forEach((q, i) => {
+            const ans = document.querySelector(`input[name="q${i}"]:checked`);
+            if(ans && ans.value === q.cr) score++;
+        });
+
+        const res = { name: document.getElementById('sName').value, cls: document.getElementById('sClass').value, sub: document.getElementById('sSub').value, score, total: currentQs.length, date: new Date().toLocaleString() };
+        db.results.push(res); save();
+        
+        document.getElementById('test-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('res-score').innerText = `${score}/${res.total}`;
+        document.getElementById('res-student-name').innerText = res.name;
+
+        // TELEGRAMGA YUBORISH
+        const msg = `📊 *YANGI NATIJA*\n\n👤 *O'quvchi:* ${res.name}\n🏫 *Sinf:* ${res.cls}\n📚 *Fan:* ${res.sub}\n✅ *Ball:* ${score} / ${res.total}\n📅 *Sana:* ${res.date}`;
+        
+        fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: "Markdown" })
+        }).then(r => console.log("Telegramga ketdi")).catch(e => console.log("TG error"));
+    }
+
+    function switchTab(e, id) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.remove('hidden');
+        e.target.classList.add('active');
+        if(id === 'tab-list') {
+            const body = document.getElementById('res-body'); body.innerHTML = '';
+            db.results.slice().reverse().forEach(r => body.innerHTML += `<tr><td>${r.name}</td><td>${r.cls}</td><td><b>${r.score}/${r.total}</b></td></tr>`);
+        }
+    }
+    function downloadPDF() { html2pdf().from(document.getElementById('pdf-area')).save('Natijalar.pdf'); }
+</script>
+</body>
+</html>    // --- TO'G'IRLANGAN MA'LUMOTLAR ---
     const TG_TOKEN = "1236509656:AAH8lsLDpQ-4r5f2ZuHXxVEigrfMqdlbz9g"; 
     const TG_CHAT_ID = "727716224"; 
     const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT80cxkCgcYdA0OqUOTkrLHeq-wp5MU29ullRUnuTX8L5IM3F3GIxdLtgbJxFrt18unljnQgdaoyarJ/pub?output=csv";
