@@ -1675,7 +1675,7 @@ function launchConfetti(percent) {
 async function sendResults(d) {
   // ─── 1. Supabase Edge Function ───────────────────
   // "YOUR_PROJECT_REF" ni o'z loyihangiz bilan almashtiring
-  const edgeUrl = CONFIG.EDGE_FUNCTION_URL;
+  const edgeUrl = "https://uoimvtnfnioujwgixqba.supabase.co/functions/v1/save-result";
 
   if (!edgeUrl.includes('https://uoimvtnfnioujwgixqba.supabase.co/functions/v1/save-result')) {
     try {
