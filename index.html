@@ -3,481 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ustoz Pro | Professional Ta'lim Platformasi</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Ustoz Pro | Oylik Test Platformasi</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
-
-<style>
-/* ═══════════════════════════════════════
-   CSS VARIABLES & RESET
-═══════════════════════════════════════ */
-:root {
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-pale: #eff6ff;
-  --primary-mid: #bfdbfe;
-  --primary-dark: #1d4ed8;
-  --secondary: #7c3aed;
-  --secondary-pale: #f5f3ff;
-  --accent: #06b6d4;
-  --accent-pale: #ecfeff;
-
-  --success: #059669;
-  --success-light: #34d399;
-  --success-pale: #ecfdf5;
-  --warning: #d97706;
-  --warning-light: #fcd34d;
-  --warning-pale: #fffbeb;
-  --danger: #dc2626;
-  --danger-light: #f87171;
-  --danger-pale: #fef2f2;
-
-  --bg: #f8fafc;
-  --bg2: #ffffff;
-  --bg3: #f1f5f9;
-  --bg4: #e2e8f0;
-  --bg5: #cbd5e1;
-  --border: #e2e8f0;
-  --border-active: #93c5fd;
-  --text: #0f172a;
-  --text-muted: #475569;
-  --text-dim: #94a3b8;
-
-  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
-  --shadow-md: 0 8px 24px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);
-  --shadow-lg: 0 16px 48px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-glow-primary: 0 0 0 3px rgba(37,99,235,0.12);
-  --shadow-glow-success: 0 0 0 3px rgba(5,150,105,0.12);
-  --shadow-glow-danger: 0 0 0 3px rgba(220,38,38,0.12);
-
-  --r-xs: 8px; --r-sm: 12px; --r-md: 16px;
-  --r-lg: 20px; --r-xl: 28px; --r-full: 9999px;
-
-  --t-fast: 150ms ease;
-  --t-base: 220ms ease;
-  --t-slow: 350ms ease;
-  --t-spring: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  --sidebar-width: 260px;
-  --content-max: 780px;
-}
-
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--bg);color:var(--text);
-  min-height:100vh;overflow-x:hidden;line-height:1.5
-}
-
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 5% -10%,rgba(37,99,235,0.09) 0%,transparent 55%),
-    radial-gradient(ellipse 60% 50% at 95% 105%,rgba(124,58,237,0.07) 0%,transparent 55%),
-    radial-gradient(ellipse 40% 30% at 50% 50%,rgba(6,182,212,0.04) 0%,transparent 60%);
-  pointer-events:none
-}
-
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:var(--r-full)}
-::-webkit-scrollbar-thumb:hover{background:var(--text-dim)}
-
-/* ── LAYOUT ── */
-.app-shell{position:relative;z-index:1;display:flex;min-height:100vh}
-
-.sidebar{
-  width:var(--sidebar-width);background:var(--bg2);
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  position:fixed;left:0;top:0;bottom:0;z-index:100;
-  transition:transform var(--t-slow);box-shadow:var(--shadow)
-}
-.sidebar-header{padding:24px 20px 20px;border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-icon{
-  width:40px;height:40px;
-  background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
-  border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;
-  font-size:20px;box-shadow:0 4px 12px rgba(37,99,235,0.3);flex-shrink:0;
-  transition:transform var(--t-spring),box-shadow var(--t-base)
-}
-.logo:hover .logo-icon{transform:rotate(-8deg) scale(1.08);box-shadow:0 6px 20px rgba(37,99,235,0.4)}
-.logo-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1;letter-spacing:-0.02em}
-.logo-name span{background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.logo-tagline{font-size:10px;color:var(--text-dim);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:2px}
-
-.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto}
-.nav-section-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;padding:0 8px;margin:16px 0 6px}
-.nav-section-label:first-child{margin-top:0}
-.nav-item{
-  display:flex;align-items:center;gap:10px;padding:10px 12px;
-  border-radius:var(--r-sm);font-size:13px;font-weight:600;color:var(--text-muted);
-  cursor:pointer;transition:all var(--t-base);margin-bottom:2px;user-select:none
-}
-.nav-item:hover{background:var(--primary-pale);color:var(--primary)}
-.nav-item.active{background:var(--primary);color:white;box-shadow:0 4px 12px rgba(37,99,235,0.25)}
-.nav-item .nav-icon{width:22px;text-align:center;font-size:15px;flex-shrink:0}
-
-.sidebar-footer{padding:16px 12px;border-top:1px solid var(--border)}
-.sidebar-user{
-  display:flex;align-items:center;gap:10px;padding:10px 12px;
-  border-radius:var(--r-md);background:var(--bg3);border:1px solid var(--border);
-  transition:all var(--t-base);cursor:pointer
-}
-.sidebar-user:hover{background:var(--primary-pale);border-color:var(--border-active)}
-.user-avatar{
-  width:36px;height:36px;border-radius:var(--r-sm);
-  background:linear-gradient(135deg,var(--primary-pale),var(--secondary-pale));
-  border:1.5px solid var(--primary-mid);
-  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0
-}
-.user-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.2}
-.user-role{font-size:11px;color:var(--text-dim);font-weight:500}
-
-.main-content{margin-left:var(--sidebar-width);flex:1;min-height:100vh;display:flex;flex-direction:column}
-
-.topbar{
-  height:64px;background:rgba(248,250,252,0.85);
-  backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;position:sticky;top:0;z-index:50;transition:box-shadow var(--t-base)
-}
-.topbar.scrolled{box-shadow:var(--shadow)}
-.topbar-left{display:flex;align-items:center;gap:12px}
-.topbar-title{font-size:18px;font-weight:800;color:var(--text);font-family:'Fraunces',serif;letter-spacing:-0.02em}
-.topbar-breadcrumb{font-size:12px;color:var(--text-dim);font-weight:500;display:flex;align-items:center;gap:6px}
-.topbar-breadcrumb span{color:var(--text-muted)}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.topbar-action{
-  width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--border);
-  background:var(--bg2);display:flex;align-items:center;justify-content:center;
-  font-size:16px;cursor:pointer;transition:all var(--t-base);position:relative
-}
-.topbar-action:hover{background:var(--primary-pale);border-color:var(--border-active);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
-.notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--danger);border:1.5px solid var(--bg2)}
-.mobile-menu-btn{display:none;width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--bg2);cursor:pointer;align-items:center;justify-content:center;font-size:18px}
-
-.page-content{flex:1;padding:28px;max-width:calc(var(--content-max) + 56px);width:100%;margin:0 auto}
-
-/* ── SCREENS ── */
-.screen{display:none}
-.screen.active{display:block;animation:screen-in var(--t-slow) ease both}
-@keyframes screen-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── DASHBOARD ── */
-.welcome-banner{
-  background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
-  border-radius:var(--r-xl);padding:32px 32px 32px 36px;margin-bottom:24px;
-  position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(37,99,235,0.25)
-}
-.welcome-banner::before{content:'';position:absolute;top:-40px;right:-40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.06)}
-.welcome-banner::after{content:'';position:absolute;bottom:-60px;right:60px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.04)}
-.welcome-content{position:relative;z-index:1}
-.welcome-greeting{font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px}
-.welcome-title{font-family:'Fraunces',serif;font-size:clamp(22px,4vw,32px);font-weight:700;color:white;letter-spacing:-0.02em;line-height:1.1;margin-bottom:10px}
-.welcome-sub{font-size:14px;color:rgba(255,255,255,0.75);font-weight:400;max-width:420px;line-height:1.6}
-.welcome-actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
-
-.btn-white{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--r-sm);background:white;color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all var(--t-spring);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-.btn-white:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15)}
-.btn-ghost-white{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--r-sm);background:rgba(255,255,255,0.15);color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;border:1.5px solid rgba(255,255,255,0.3);cursor:pointer;transition:all var(--t-base);backdrop-filter:blur(8px)}
-.btn-ghost-white:hover{background:rgba(255,255,255,0.25);transform:translateY(-1px)}
-
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
-.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-sm);transition:all var(--t-spring);cursor:default;position:relative;overflow:hidden}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r-lg) var(--r-lg) 0 0;transition:height var(--t-base)}
-.stat-card.blue::before{background:linear-gradient(90deg,var(--primary),var(--primary-light))}
-.stat-card.green::before{background:linear-gradient(90deg,var(--success),var(--success-light))}
-.stat-card.purple::before{background:linear-gradient(90deg,var(--secondary),#a78bfa)}
-.stat-card.cyan::before{background:linear-gradient(90deg,var(--accent),#67e8f9)}
-.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
-.stat-card:hover::before{height:4px}
-.stat-icon{width:40px;height:40px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
-.stat-card.blue .stat-icon{background:var(--primary-pale)}
-.stat-card.green .stat-icon{background:var(--success-pale)}
-.stat-card.purple .stat-icon{background:var(--secondary-pale)}
-.stat-card.cyan .stat-icon{background:var(--accent-pale)}
-.stat-num{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--text);line-height:1;margin-bottom:4px}
-.stat-lbl{font-size:11px;color:var(--text-dim);font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
-.stat-trend{font-size:11px;font-weight:600;margin-top:6px;display:flex;align-items:center;gap:4px}
-.trend-up{color:var(--success)}.trend-down{color:var(--danger)}
-
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.section-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
-.section-action{font-size:12px;font-weight:700;color:var(--primary);cursor:pointer;padding:4px 10px;border-radius:var(--r-full);transition:background var(--t-fast)}
-.section-action:hover{background:var(--primary-pale)}
-
-.quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
-.qa-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:20px;cursor:pointer;transition:all var(--t-spring);display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)}
-.qa-card:hover{border-color:var(--primary-light);background:var(--primary-pale);transform:translateY(-2px);box-shadow:var(--shadow-md),var(--shadow-glow-primary)}
-.qa-icon{width:48px;height:48px;flex-shrink:0;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--primary-pale);border:1.5px solid var(--primary-mid);transition:all var(--t-spring)}
-.qa-card:hover .qa-icon{transform:scale(1.1) rotate(-5deg)}
-.qa-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
-.qa-desc{font-size:12px;color:var(--text-dim);font-weight:500}
-
-.result-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:8px;transition:all var(--t-base);cursor:default}
-.result-item:hover{background:var(--bg3);transform:translateX(3px)}
-.ri-icon{width:40px;height:40px;flex-shrink:0;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:18px}
-.ri-info{flex:1}
-.ri-name{font-size:13px;font-weight:700;color:var(--text)}
-.ri-meta{font-size:11px;color:var(--text-dim);font-weight:500;margin-top:2px}
-.ri-score{text-align:right}
-.ri-pct{font-family:'DM Mono',monospace;font-size:18px;font-weight:500}
-.ri-grade{font-size:11px;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:0.05em}
-
-/* ── SETUP CARD ── */
-.setup-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:28px;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow var(--t-base)}
-.setup-card:hover{box-shadow:var(--shadow)}
-.setup-card-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.setup-card-icon{width:38px;height:38px;border-radius:var(--r-sm);background:var(--primary-pale);border:1.5px solid var(--primary-mid);display:flex;align-items:center;justify-content:center;font-size:18px}
-.setup-card-title{font-size:16px;font-weight:700;color:var(--text)}
-.setup-card-subtitle{font-size:12px;color:var(--text-dim);font-weight:500;margin-top:1px}
-
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:11px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
-.form-control{width:100%;height:52px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;padding:0 16px;transition:all var(--t-base);-webkit-appearance:none;appearance:none}
-.form-control.select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:var(--bg);padding-right:42px;cursor:pointer}
-.form-control:focus{outline:none;border-color:var(--primary-light);box-shadow:var(--shadow-glow-primary);background:var(--bg2)}
-.form-control option{background:white}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--text-dim);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--r-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all var(--t-spring);position:relative;overflow:hidden;letter-spacing:0.01em;text-decoration:none;user-select:none}
-.btn::after{content:'';position:absolute;inset:0;background:white;opacity:0;transition:opacity var(--t-fast);border-radius:inherit}
-.btn:hover::after{opacity:0.06}
-.btn:active{transform:scale(0.97)}
-.btn:active::after{opacity:0.12}
-.btn-full{width:100%}.btn-lg{height:54px;font-size:15px}.btn-md{height:48px}.btn-sm{height:38px;font-size:12px;padding:0 16px;border-radius:var(--r-xs)}.btn-xs{height:30px;font-size:11px;padding:0 12px;border-radius:var(--r-xs)}
-.btn-primary{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:white;padding:0 24px;box-shadow:0 4px 16px rgba(37,99,235,0.3)}
-.btn-primary:hover{box-shadow:0 8px 24px rgba(37,99,235,0.45);transform:translateY(-2px)}
-.btn-success{background:linear-gradient(135deg,var(--success) 0%,#10b981 100%);color:white;padding:0 24px;box-shadow:0 4px 16px rgba(5,150,105,0.3)}
-.btn-success:hover{box-shadow:0 8px 24px rgba(5,150,105,0.45);transform:translateY(-2px)}
-.btn-secondary{background:var(--bg3);border:1.5px solid var(--border);color:var(--text-muted);padding:0 20px}
-.btn-secondary:hover{border-color:var(--border-active);color:var(--primary);background:var(--primary-pale)}
-.btn-danger{background:var(--danger-pale);border:1.5px solid rgba(220,38,38,0.25);color:var(--danger);padding:0 16px}
-.btn-danger:hover{background:rgba(220,38,38,0.12)}
-.btn-outline{background:var(--bg2);border:1.5px solid var(--border);color:var(--text);padding:0 20px}
-.btn-outline:hover{border-color:var(--primary-light)}
-
-/* ── TOAST ── */
-.toast-container{position:fixed;top:16px;right:16px;z-index:9000;display:flex;flex-direction:column;gap:8px}
-.toast{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-md);box-shadow:var(--shadow-md);font-size:13px;font-weight:600;color:var(--text);min-width:260px;max-width:340px;animation:toast-in var(--t-slow) cubic-bezier(0.34,1.56,0.64,1) both}
-@keyframes toast-in{from{opacity:0;transform:translateX(24px) scale(0.95)}to{opacity:1;transform:translateX(0) scale(1)}}
-.toast-icon{font-size:18px;flex-shrink:0}
-.toast-body{flex:1}
-.toast-title{font-weight:700;font-size:13px;line-height:1.3}
-.toast-sub{font-size:11px;color:var(--text-dim);font-weight:500;margin-top:1px}
-.toast.success{border-color:rgba(5,150,105,0.3)}
-.toast.error{border-color:rgba(220,38,38,0.3)}
-.toast.info{border-color:rgba(37,99,235,0.3)}
-.toast.warning{border-color:rgba(217,119,6,0.3)}
-
-/* ── STICKY TIMER ── */
-.sticky-timer{position:sticky;top:0;z-index:200;background:rgba(248,250,252,0.92);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);margin:-28px -28px 24px;padding:12px 28px;transition:all var(--t-base)}
-.sticky-timer.warning{background:rgba(255,251,235,0.95);border-bottom-color:rgba(217,119,6,0.3)}
-.sticky-timer.danger{background:rgba(254,242,242,0.95);border-bottom-color:rgba(220,38,38,0.3);animation:timer-border-pulse 1.2s ease-in-out infinite}
-@keyframes timer-border-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 3px rgba(220,38,38,0.1)}}
-.timer-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.timer-left-wrap{display:flex;align-items:center;gap:12px}
-.timer-clock-icon{width:42px;height:42px;border-radius:var(--r-sm);background:var(--primary-pale);display:flex;align-items:center;justify-content:center;font-size:20px;border:1.5px solid var(--primary-mid);transition:all var(--t-base)}
-.sticky-timer.warning .timer-clock-icon{background:var(--warning-pale);border-color:rgba(217,119,6,0.3)}
-.sticky-timer.danger .timer-clock-icon{background:var(--danger-pale);border-color:rgba(220,38,38,0.3);animation:icon-shake 0.4s ease-in-out infinite}
-@keyframes icon-shake{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
-.timer-eyebrow{font-size:10px;font-weight:800;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase}
-.timer-digits{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--text);line-height:1;transition:color var(--t-base)}
-.sticky-timer.warning .timer-digits{color:var(--warning)}
-.sticky-timer.danger .timer-digits{color:var(--danger)}
-.timer-center{flex:1}
-.timer-progress-wrap{display:flex;align-items:center;gap:10px}
-.timer-bar-track{flex:1;height:8px;background:var(--bg4);border-radius:var(--r-full);overflow:hidden}
-.timer-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:var(--r-full);transition:width 1s linear,background 1s}
-.sticky-timer.warning .timer-bar-fill{background:linear-gradient(90deg,var(--warning),var(--warning-light))}
-.sticky-timer.danger .timer-bar-fill{background:linear-gradient(90deg,var(--danger),var(--danger-light))}
-.timer-badges{display:flex;gap:6px;align-items:center;margin-top:8px}
-.timer-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:var(--r-full);background:var(--bg3);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted)}
-
-/* ── QUESTION PROGRESS ── */
-.q-progress-row{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 18px;margin-bottom:16px;box-shadow:var(--shadow-sm)}
-.q-prog-label{font-size:12px;font-weight:700;color:var(--text-muted);white-space:nowrap}
-.q-prog-track{flex:1;height:8px;background:var(--bg4);border-radius:var(--r-full);overflow:hidden}
-.q-prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:var(--r-full);transition:width 0.4s ease}
-.q-prog-pct{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--primary);white-space:nowrap}
-
-/* ── QUESTION NAV ── */
-.q-nav-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:16px;box-shadow:var(--shadow-sm)}
-.q-nav-label{font-size:10px;font-weight:800;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px}
-.q-dots{display:flex;flex-wrap:wrap;gap:6px}
-.q-dot{
-  width:34px;height:34px;border-radius:var(--r-xs);border:1.5px solid var(--border);
-  background:var(--bg3);display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:var(--text-dim);font-family:'DM Mono',monospace;
-  cursor:pointer;transition:all var(--t-spring);position:relative
-}
-.q-dot:hover{border-color:var(--primary-light);color:var(--primary);background:var(--primary-pale);transform:scale(1.1)}
-.q-dot.answered{background:var(--primary);border-color:var(--primary);color:white;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
-.q-dot.bookmarked::after{content:'';position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--warning);border:1.5px solid var(--bg2)}
-
-/* ── QUESTION CARDS ── */
-.q-card{
-  background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-xl);
-  padding:24px;margin-bottom:14px;box-shadow:var(--shadow-sm);
-  transition:all var(--t-base);animation:card-in 0.35s ease both
-}
-@keyframes card-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.q-card.answered{border-color:var(--border-active);box-shadow:var(--shadow-sm),var(--shadow-glow-primary)}
-.q-card.active-card{border-color:var(--primary);box-shadow:var(--shadow),var(--shadow-glow-primary)}
-.q-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
-.q-card-left{display:flex;align-items:flex-start;gap:12px;flex:1}
-.q-num{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;background:var(--primary-pale);border:1.5px solid var(--primary-mid);border-radius:var(--r-sm);font-size:12px;font-weight:800;color:var(--primary);font-family:'DM Mono',monospace;flex-shrink:0;transition:all var(--t-base)}
-.q-card.answered .q-num{background:var(--primary);border-color:var(--primary);color:white}
-.q-text{font-size:15px;line-height:1.7;color:var(--text);font-weight:500;padding-top:4px}
-.q-actions{display:flex;gap:6px;flex-shrink:0}
-.q-action-btn{width:34px;height:34px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all var(--t-spring)}
-.q-action-btn:hover{background:var(--primary-pale);border-color:var(--border-active);transform:scale(1.1)}
-.q-action-btn.bookmarked{background:var(--warning-pale);border-color:rgba(217,119,6,0.3)}
-
-/* ── OPTIONS ── */
-.options-list{display:flex;flex-direction:column;gap:8px}
-.option-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;transition:all var(--t-base);position:relative}
-.option-item:hover{background:var(--primary-pale);border-color:var(--primary-mid);transform:translateX(3px)}
-.option-item input[type="radio"]{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--primary);cursor:pointer}
-.option-item:has(input:checked){background:var(--primary-pale);border-color:var(--primary-light);box-shadow:var(--shadow-glow-primary);transform:translateX(3px)}
-.option-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;background:var(--bg4);border-radius:var(--r-xs);font-size:11px;font-weight:800;color:var(--text-dim);font-family:'DM Mono',monospace;transition:all var(--t-base)}
-.option-item:has(input:checked) .option-letter{background:var(--primary);color:white}
-.option-txt{font-size:14px;line-height:1.6;color:var(--text-muted);transition:color var(--t-base)}
-.option-item:has(input:checked) .option-txt{color:var(--text);font-weight:500}
-
-/* ── HINT ── */
-.hint-section{margin-top:12px;border-top:1px dashed var(--border);padding-top:12px}
-.hint-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--r-full);background:var(--bg3);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-dim);cursor:pointer;transition:all var(--t-base)}
-.hint-btn:hover{background:var(--warning-pale);border-color:rgba(217,119,6,0.3);color:var(--warning)}
-.hint-content{display:none;margin-top:10px;padding:12px 14px;background:var(--warning-pale);border:1px solid rgba(217,119,6,0.2);border-radius:var(--r-sm);font-size:13px;color:#92400e;line-height:1.6;animation:hint-in 0.25s ease both}
-@keyframes hint-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.hint-content.visible{display:block}
-
-/* ── FINISH SECTION ── */
-.finish-section{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:24px;margin-top:8px;box-shadow:var(--shadow-sm)}
-.finish-warning{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--warning-pale);border:1px solid rgba(217,119,6,0.2);border-radius:var(--r-sm);margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.6}
-
-/* ── RESULT SCREEN ── */
-.result-top{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow)}
-.result-hero-band{padding:40px 28px 32px;text-align:center;background:linear-gradient(160deg,var(--bg2) 0%,var(--bg3) 100%);position:relative;border-bottom:1px solid var(--border)}
-#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:8000;display:none}
-
-/* SVG Circle Progress */
-.circle-progress-wrap{display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative}
-.circle-progress{transform:rotate(-90deg);filter:drop-shadow(0 4px 12px rgba(37,99,235,0.2))}
-.circle-bg{fill:none;stroke:var(--bg4)}
-.circle-fill{fill:none;stroke-linecap:round;stroke-dasharray:408;stroke-dashoffset:408;transition:stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)}
-.circle-pct-text{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;fill:var(--text);text-anchor:middle;dominant-baseline:middle}
-.circle-emoji{position:absolute;font-size:28px;bottom:-4px;right:-4px;animation:emoji-pop 0.5s 0.6s var(--t-spring) both;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15))}
-@keyframes emoji-pop{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-
-.result-name{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:6px}
-.result-meta-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:28px}
-.meta-pill{padding:4px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-full);font-size:12px;font-weight:600;color:var(--text-muted)}
-.result-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px 24px}
-.res-stat{text-align:center;padding:16px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-md)}
-.res-stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;margin-bottom:4px}
-.res-stat-val.green{color:var(--success)}.res-stat-val.blue{color:var(--primary)}.res-stat-val.orange{color:var(--warning)}.res-stat-val.red{color:var(--danger)}
-.res-stat-lbl{font-size:10px;font-weight:800;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase}
-.result-msg-box{margin:0 24px 20px;padding:14px 16px;background:var(--primary-pale);border:1px solid var(--primary-mid);border-radius:var(--r-sm);font-size:14px;color:#1e40af;display:flex;align-items:flex-start;gap:10px;line-height:1.6}
-
-/* ── REVIEW ── */
-.review-item{padding:16px 20px;background:var(--bg2);border:1.5px solid var(--border);border-left-width:4px;border-radius:var(--r-xs);margin-bottom:8px;transition:transform var(--t-base);animation:card-in 0.3s ease both}
-.review-item:hover{transform:translateX(4px)}
-.review-correct{border-left-color:var(--success)}
-.review-wrong{border-left-color:var(--danger)}
-.review-q{font-size:14px;color:var(--text);font-weight:500;line-height:1.6;margin-bottom:10px}
-.review-answer-row{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:4px}
-.review-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.dot-correct{background:var(--success)}.dot-wrong{background:var(--danger)}
-.ans-lbl{color:var(--text-dim);font-weight:600}
-.ans-right{color:var(--success);font-weight:700}
-.ans-wrong{color:var(--danger);font-weight:700}
-
-/* ── MANAGE TABS ── */
-.manage-tabs{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-md);padding:4px;gap:4px;margin-bottom:20px}
-.mtab{flex:1;padding:9px;border:none;background:transparent;border-radius:var(--r-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;transition:all var(--t-base)}
-.mtab.active{background:var(--bg2);color:var(--primary);box-shadow:var(--shadow-sm)}
-.manage-panel{display:none}
-.manage-panel.active{display:block;animation:screen-in 0.3s ease both}
-.list-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:8px;font-size:14px;font-weight:500;transition:all var(--t-base)}
-.list-item:hover{background:var(--primary-pale);border-color:var(--border-active)}
-.li-icon{width:30px;height:30px;border-radius:var(--r-xs);background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.li-text{flex:1}
-.li-del{width:28px;height:28px;border-radius:6px;background:transparent;border:none;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-dim);cursor:pointer;transition:all var(--t-base)}
-.li-del:hover{background:var(--danger-pale);color:var(--danger)}
-.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;margin-top:20px}
-.sec-head h4{font-size:14px;font-weight:700;color:var(--text)}
-.badge{display:inline-flex;align-items:center;justify-content:center;padding:2px 9px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--r-full);font-size:11px;font-weight:800;color:var(--text-dim);font-family:'DM Mono',monospace}
-
-/* ── SYNC CARD ── */
-.sync-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-bottom:16px;box-shadow:var(--shadow-sm)}
-.sync-inner{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.sync-icon-wrap{width:48px;height:48px;flex-shrink:0;border-radius:var(--r-sm);background:var(--primary-pale);border:1.5px solid var(--primary-mid);display:flex;align-items:center;justify-content:center;font-size:24px;transition:transform var(--t-spring)}
-.sync-spinning .sync-icon-wrap{animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.sync-info-txt{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
-.sync-info-sub{font-size:12px;color:var(--text-dim);font-weight:500}
-.info-note{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--primary-pale);border:1px solid var(--primary-mid);border-radius:var(--r-sm);font-size:13px;color:#1e40af;line-height:1.6}
-
-/* ── CHEAT OVERLAY ── */
-.cheat-overlay{position:fixed;inset:0;z-index:9999;background:rgba(127,29,29,0.9);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;animation:overlay-in 0.25s ease}
-@keyframes overlay-in{from{opacity:0}to{opacity:1}}
-.cheat-modal{background:white;border-radius:var(--r-xl);padding:40px 32px;text-align:center;max-width:380px;width:100%;box-shadow:var(--shadow-lg);animation:modal-in 0.3s var(--t-spring) both}
-@keyframes modal-in{from{transform:scale(0.8) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-.cheat-icon{font-size:64px;display:block;margin-bottom:16px;animation:shake-anim 0.5s ease both}
-@keyframes shake-anim{0%,100%{transform:rotate(0)}20%{transform:rotate(-15deg)}40%{transform:rotate(15deg)}60%{transform:rotate(-10deg)}80%{transform:rotate(10deg)}}
-.cheat-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--danger);margin-bottom:10px}
-.cheat-desc{font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:16px}
-.cheat-count-box{padding:10px 16px;background:var(--danger-pale);border:1px solid rgba(220,38,38,0.2);border-radius:var(--r-sm);margin-bottom:20px;font-size:13px;color:var(--text-muted);font-weight:500}
-.cheat-count-box b{color:var(--danger);font-family:'DM Mono',monospace;font-size:16px}
-
-/* ── SENDING OVERLAY ── */
-.sending-overlay{position:fixed;inset:0;z-index:7500;background:rgba(248,250,252,0.88);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
-.spinner-ring{width:52px;height:52px;border:3.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.75s linear infinite}
-.sending-label{font-size:15px;font-weight:600;color:var(--text-muted)}
-
-/* ── SESSION RESTORE BANNER ── */
-.restore-banner{
-  display:none;padding:14px 18px;background:var(--warning-pale);
-  border:1.5px solid rgba(217,119,6,0.3);border-radius:var(--r-lg);
-  margin-bottom:16px;gap:12px;align-items:center;font-size:13px;
-  animation:screen-in 0.3s ease both
-}
-.restore-banner.visible{display:flex}
-.restore-actions{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
-
-/* ── UTILITY ── */
-.hidden{display:none!important}
-.sidebar-overlay{display:none;position:fixed;inset:0;z-index:99;background:rgba(15,23,42,0.5);backdrop-filter:blur(4px)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0);box-shadow:var(--shadow-lg)}
-  .sidebar-overlay.visible{display:block}
-  .main-content{margin-left:0}
-  .mobile-menu-btn{display:flex}
-  .page-content{padding:18px}
-  .sticky-timer{margin:-18px -18px 18px;padding:10px 18px}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .quick-actions{grid-template-columns:1fr}
-  .result-stats-row{grid-template-columns:repeat(2,1fr);gap:8px}
-  .res-stat-val{font-size:18px}
-  .form-row{grid-template-columns:1fr}
-  .timer-center{display:none}
-}
-</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -489,34 +20,35 @@ body::before{
   <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a class="logo" href="#" onclick="navigateTo('home');return false;">
+      <a class="logo" href="#" onclick="navigateTo('home');return false">
         <div class="logo-icon">📚</div>
         <div>
           <div class="logo-name">Ustoz <span>Pro</span></div>
-          <div class="logo-tagline">Professional Platforma</div>
+          <div class="logo-tagline">Oylik Test Platformasi</div>
         </div>
       </a>
     </div>
     <div class="sidebar-nav">
       <div class="nav-section-label">Asosiy</div>
-      <div class="nav-item active" id="nav-home" onclick="navigateTo('home')"><span class="nav-icon">🏠</span> Bosh sahifa</div>
-      <div class="nav-item" id="nav-test" onclick="navigateTo('test-setup')"><span class="nav-icon">📝</span> Yangi test</div>
+      <div class="nav-item active" id="nav-home" onclick="navigateTo('home')"><span class="nav-icon">🏠</span>Bosh sahifa</div>
+      <div class="nav-item" id="nav-test" onclick="navigateTo('test-setup')"><span class="nav-icon">📝</span>Yangi test</div>
       <div class="nav-section-label">Boshqaruv</div>
-      <div class="nav-item" id="nav-manage" onclick="navigateTo('manage')"><span class="nav-icon">⚙️</span> Boshqarish</div>
-      <div class="nav-item" id="nav-sync" onclick="navigateTo('sync')"><span class="nav-icon">🔄</span> Bazani yangilash</div>
+      <div class="nav-item" id="nav-admin" onclick="navigateTo('admin')"><span class="nav-icon">🔐</span>Admin panel</div>
+      <div class="nav-item" id="nav-manage" onclick="navigateTo('manage')"><span class="nav-icon">⚙️</span>Boshqarish</div>
+      <div class="nav-item" id="nav-sync" onclick="navigateTo('sync')"><span class="nav-icon">🔄</span>Bazani yangilash</div>
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="user-avatar">👨‍🏫</div>
         <div>
-          <div class="user-name">Admin</div>
-          <div class="user-role">O'qituvchi</div>
+          <div class="user-name" id="sidebarUserName">Foydalanuvchi</div>
+          <div class="user-role" id="sidebarUserRole">O'quvchi</div>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main-content">
     <header class="topbar" id="topbar">
       <div class="topbar-left">
@@ -534,7 +66,7 @@ body::before{
 
     <div class="page-content">
 
-      <!-- ── HOME ── -->
+      <!-- ═══ HOME ═══ -->
       <div class="screen active" id="screen-home">
         <div class="welcome-banner">
           <div class="welcome-content">
@@ -543,11 +75,11 @@ body::before{
             <p class="welcome-sub">Professional ta'lim platformasida o'quvchilaringiz bilimini sinab ko'ring.</p>
             <div class="welcome-actions">
               <button class="btn-white" onclick="navigateTo('test-setup')">▶ Yangi test boshlash</button>
-              <button class="btn-ghost-white" onclick="navigateTo('manage')">⚙ Boshqarish</button>
+              <button class="btn-ghost-white" onclick="navigateTo('admin')">🔐 Admin panel</button>
             </div>
           </div>
         </div>
-        <div class="stats-grid" id="statsGrid">
+        <div class="stats-grid">
           <div class="stat-card blue"><div class="stat-icon">📝</div><div class="stat-num" id="statTotalTests">0</div><div class="stat-lbl">Umumiy testlar</div><div class="stat-trend trend-up">↑ Bugun faol</div></div>
           <div class="stat-card green"><div class="stat-icon">✅</div><div class="stat-num" id="statAvgScore">0%</div><div class="stat-lbl">O'rtacha ball</div><div class="stat-trend" id="statAvgTrend">— ma'lumot yo'q</div></div>
           <div class="stat-card purple"><div class="stat-icon">👥</div><div class="stat-num" id="statStudentsCount">0</div><div class="stat-lbl">O'quvchilar</div><div class="stat-trend trend-up">↑ Faol</div></div>
@@ -555,28 +87,27 @@ body::before{
         </div>
         <div class="section-header"><div class="section-title">Tezkor harakatlar</div></div>
         <div class="quick-actions">
-          <div class="qa-card" onclick="navigateTo('test-setup')"><div class="qa-icon">📝</div><div class="qa-info"><div class="qa-title">Yangi test boshlash</div><div class="qa-desc">O'quvchi uchun test yarating</div></div></div>
-          <div class="qa-card" onclick="navigateTo('sync')"><div class="qa-icon">🔄</div><div class="qa-info"><div class="qa-title">Bazani yangilash</div><div class="qa-desc">Savollarni yuklab oling</div></div></div>
-          <div class="qa-card" onclick="navigateTo('manage')"><div class="qa-icon">👥</div><div class="qa-info"><div class="qa-title">O'quvchilar</div><div class="qa-desc">Sinflar va o'quvchilarni boshqaring</div></div></div>
-          <div class="qa-card" onclick="navigateTo('manage')"><div class="qa-icon">📖</div><div class="qa-info"><div class="qa-title">Fanlar</div><div class="qa-desc">Fanlar ro'yxatini o'zgartiring</div></div></div>
+          <div class="qa-card" onclick="navigateTo('test-setup')"><div class="qa-icon">📝</div><div><div class="qa-title">Yangi test boshlash</div><div class="qa-desc">O'quvchi uchun test yarating</div></div></div>
+          <div class="qa-card" onclick="navigateTo('admin')"><div class="qa-icon">🏆</div><div><div class="qa-title">Reyting ko'rish</div><div class="qa-desc">Dinamik oylik reyting</div></div></div>
+          <div class="qa-card" onclick="navigateTo('manage')"><div class="qa-icon">👥</div><div><div class="qa-title">O'quvchilar</div><div class="qa-desc">Sinflar va o'quvchilarni boshqaring</div></div></div>
+          <div class="qa-card" onclick="navigateTo('sync')"><div class="qa-icon">🔄</div><div><div class="qa-title">Bazani yangilash</div><div class="qa-desc">Savollarni yuklab oling</div></div></div>
         </div>
-        <div class="section-header"><div class="section-title">So'nggi natijalar</div><div class="section-action" onclick="showAllResults()">Hammasini ko'rish →</div></div>
-        <div id="recentResultsList"></div>
+        <div class="section-header"><div class="section-title">So'nggi natijalar</div><div class="section-action" onclick="navigateTo('admin')">Hammasini ko'rish →</div></div>
+        <div id="recentResultsList"><div class="empty-state">📭 Hali test natijasi yo'q. Birinchi testni boshlang!</div></div>
       </div>
 
-      <!-- ── TEST SETUP ── -->
+      <!-- ═══ TEST SETUP ═══ -->
       <div class="screen" id="screen-test-setup">
-        <!-- Session restore banner -->
-        <div class="restore-banner" id="restoreBanner">
-          <span>⚠️</span>
-          <span id="restoreBannerText">Tugallanmagan test topildi.</span>
-          <div class="restore-actions">
-            <button class="btn btn-sm btn-primary" onclick="restoreSession()">▶ Davom ettirish</button>
-            <button class="btn btn-sm btn-secondary" onclick="discardSession()">🗑 O'chirish</button>
+        <!-- Imtihon sanasi tekshirish banneri -->
+        <div id="examDateWarning" class="exam-date-warning hidden">
+          <span class="edw-icon">📅</span>
+          <div class="edw-body">
+            <div class="edw-title" id="examDateWarningTitle">Imtihon hali boshlanmadi yoki yakunlandi</div>
+            <div class="edw-sub" id="examDateWarningSub">Admin tomonidan belgilangan imtihon sanasi:</div>
           </div>
         </div>
 
-        <div class="sync-card">
+        <div class="sync-card" style="margin-bottom:14px">
           <div class="sync-inner">
             <div class="sync-icon-wrap" id="syncIconWrap">🔄</div>
             <div>
@@ -584,9 +115,7 @@ body::before{
               <div class="sync-info-sub" id="syncStatusText">Savollar yuklanmagan yoki eskirib qolgan bo'lishi mumkin</div>
             </div>
           </div>
-          <button class="btn btn-secondary btn-md btn-full" onclick="syncData()">
-            <span id="syncBtnIcon">🔄</span> <span id="syncBtnText">Bazani yangilash</span>
-          </button>
+          <button class="btn btn-secondary btn-md btn-full" onclick="syncData()"><span id="syncBtnIcon">🔄</span> <span id="syncBtnText">Bazani yangilash</span></button>
         </div>
 
         <div class="setup-card">
@@ -594,19 +123,58 @@ body::before{
             <div class="setup-card-icon">👤</div>
             <div><div class="setup-card-title">O'quvchi ma'lumotlari</div><div class="setup-card-subtitle">Sinf, ism va fanni tanlang</div></div>
           </div>
-          <div class="form-group"><label class="form-label">Sinf</label><select class="form-control select" id="sClass" onchange="updateUI()"><option value="">— Sinfni tanlang —</option></select></div>
-          <div class="form-group"><label class="form-label">O'quvchi ismi</label><select class="form-control select" id="sName"><option value="">— Avval sinfni tanlang —</option></select></div>
-          <div class="form-group"><label class="form-label">Fan</label><select class="form-control select" id="sSub"><option value="">— Avval sinfni tanlang —</option></select></div>
-          <div class="form-row">
-            <div class="form-group"><label class="form-label">Savol soni</label><select class="form-control select" id="sCount"><option value="10">10 ta savol</option><option value="15" selected>15 ta savol</option><option value="20">20 ta savol</option><option value="25">25 ta savol</option><option value="30">30 ta savol</option></select></div>
-            <div class="form-group"><label class="form-label">Vaqt (daqiqa)</label><select class="form-control select" id="sTime"><option value="10">10 daqiqa</option><option value="15">15 daqiqa</option><option value="20" selected>20 daqiqa</option><option value="25">25 daqiqa</option><option value="30">30 daqiqa</option><option value="45">45 daqiqa</option></select></div>
+          <div class="form-group">
+            <label class="form-label">Sinf</label>
+            <select class="form-control select" id="sClass" onchange="updateTestUI()">
+              <option value="">— Sinfni tanlang —</option>
+            </select>
           </div>
+          <div class="form-group">
+            <label class="form-label">O'quvchi ismi</label>
+            <select class="form-control select" id="sName"><option value="">— Avval sinfni tanlang —</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fan</label>
+            <select class="form-control select" id="sSub"><option value="">— Avval sinfni tanlang —</option></select>
+          </div>
+
+          <div id="adminSettingsNote" class="info-note" style="margin-bottom:14px;display:none">
+            ⚙️ <span id="adminSettingsNoteText">Savol soni va vaqtni admin belgilagan. O'zgartirishga ruxsat berilmagan.</span>
+          </div>
+
+          <div id="testSetupControls">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Savol soni</label>
+                <select class="form-control select" id="sCount">
+                  <option value="10">10 ta savol</option>
+                  <option value="15" selected>15 ta savol</option>
+                  <option value="20">20 ta savol</option>
+                  <option value="25">25 ta savol</option>
+                  <option value="30">30 ta savol</option>
+                  <option value="40">40 ta savol</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Vaqt (daqiqa)</label>
+                <select class="form-control select" id="sTime">
+                  <option value="10">10 daqiqa</option>
+                  <option value="15">15 daqiqa</option>
+                  <option value="20" selected>20 daqiqa</option>
+                  <option value="25">25 daqiqa</option>
+                  <option value="30">30 daqiqa</option>
+                  <option value="45">45 daqiqa</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <div class="divider">tayyor</div>
           <button class="btn btn-primary btn-lg btn-full" onclick="startTest()">▶&nbsp; Testni boshlash</button>
         </div>
       </div>
 
-      <!-- ── TEST IN PROGRESS ── -->
+      <!-- ═══ TEST IN PROGRESS ═══ -->
       <div class="screen" id="screen-test">
         <div class="sticky-timer" id="stickyTimer">
           <div class="timer-inner">
@@ -620,7 +188,7 @@ body::before{
             <div class="timer-center">
               <div class="timer-progress-wrap">
                 <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBarFill" style="width:100%"></div></div>
-                <span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text-dim);white-space:nowrap" id="timerPct">100%</span>
+                <span class="timer-pct-txt" id="timerPct">100%</span>
               </div>
               <div class="timer-badges">
                 <div class="timer-chip" id="timerStudentChip">👤 —</div>
@@ -636,7 +204,7 @@ body::before{
           <span class="q-prog-pct" id="qProgPct">0%</span>
         </div>
         <div class="q-nav-wrap">
-          <div class="q-nav-label">Savollar navigatsiyasi — 🔵 javoblangan · 🟡 bayroqchali</div>
+          <div class="q-nav-label">Savollar navigatsiyasi — 🔵 javoblangan · 🔖 bayroqchali</div>
           <div class="q-dots" id="qDots"></div>
         </div>
         <div id="questionsArea"></div>
@@ -646,37 +214,24 @@ body::before{
         </div>
       </div>
 
-      <!-- ── RESULT ── -->
+      <!-- ═══ RESULT ═══ -->
       <div class="screen" id="screen-result">
-        <div class="result-top">
+        <div class="result-top slide-in">
           <div class="result-hero-band">
             <div class="circle-progress-wrap">
-              <!-- SVG animatsion doira progress bari -->
               <svg class="circle-progress" width="160" height="160" viewBox="0 0 160 160">
-                <defs>
-                  <linearGradient id="circGrad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/>
-                  </linearGradient>
-                  <linearGradient id="circGradGreen" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#34d399"/>
-                  </linearGradient>
-                  <linearGradient id="circGradOrange" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#d97706"/><stop offset="100%" stop-color="#fcd34d"/>
-                  </linearGradient>
-                  <linearGradient id="circGradRed" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#dc2626"/><stop offset="100%" stop-color="#f87171"/>
-                  </linearGradient>
-                </defs>
-                <!-- 65 radius → circumference = 2π×65 ≈ 408.4 -->
                 <circle class="circle-bg" cx="80" cy="80" r="65" stroke-width="10"/>
                 <circle class="circle-fill" id="circFill" cx="80" cy="80" r="65" stroke-width="10" stroke="url(#circGrad)"/>
-                <!-- Markazda foiz ko'rsatuvchi text -->
-                <!-- rotate 90deg qaytarish uchun transform -->
-                <text class="circle-pct-text" id="circPctText" x="80" y="80"
-                  transform="rotate(90 80 80)" style="font-family:'DM Mono',monospace;font-size:28px;font-weight:500;fill:var(--text);text-anchor:middle;dominant-baseline:middle">
-                  0%
-                </text>
+                <defs>
+                  <linearGradient id="circGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#7c3aed"/>
+                  </linearGradient>
+                </defs>
               </svg>
+              <div class="circle-score-text">
+                <div class="circle-score-pct" id="circScorePct">0%</div>
+                <div class="circle-score-lbl">natija</div>
+              </div>
               <div class="circle-emoji" id="resultEmoji">🏅</div>
             </div>
             <div class="result-name" id="resStudentName">—</div>
@@ -685,32 +240,268 @@ body::before{
           <div class="result-stats-row">
             <div class="res-stat"><div class="res-stat-val green" id="resScore">—</div><div class="res-stat-lbl">To'g'ri</div></div>
             <div class="res-stat"><div class="res-stat-val blue" id="resPercent">—</div><div class="res-stat-lbl">Foiz</div></div>
-            <div class="res-stat"><div class="res-stat-val blue" id="resRating">—</div><div class="res-stat-lbl">Rating ball</div></div>
             <div class="res-stat"><div class="res-stat-val orange" id="resCheat">—</div><div class="res-stat-lbl">Chetlanish</div></div>
           </div>
           <div class="result-msg-box"><span>💬</span><span id="resMsgText">—</span></div>
         </div>
-        <div style="display:flex;gap:10px;margin-bottom:20px;">
+
+        <div class="answer-reveal-btn-row">
           <button class="btn btn-outline btn-md" style="flex:1" onclick="navigateTo('home')">↩ Bosh sahifaga</button>
+          <button class="btn btn-warning btn-md" style="flex:1" onclick="showAnswerLockModal()">🔓 To'g'ri javoblarni ko'rish</button>
           <button class="btn btn-primary btn-md" style="flex:1" onclick="navigateTo('test-setup')">▶ Yangi test</button>
         </div>
-        <div class="setup-card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+
+        <div class="setup-card" id="reviewSection">
+          <div class="review-header">
             <div class="section-title">Xatolar tahlili</div>
             <span class="badge" id="reviewBadge">0 xato</span>
           </div>
           <div id="reviewList"></div>
         </div>
+
+        <div class="setup-card hidden" id="correctAnswersSection">
+          <div class="review-header">
+            <div class="section-title">✅ Barcha to'g'ri javoblar</div>
+            <button class="btn btn-danger btn-xs" onclick="hideCorrectAnswers()">✕ Yopish</button>
+          </div>
+          <div id="correctAnswersList"></div>
+        </div>
       </div>
 
-      <!-- ── MANAGE ── -->
+      <!-- ═══ ADMIN PANEL ═══ -->
+      <div class="screen" id="screen-admin">
+        <!-- Kreativ Login -->
+        <div id="adminLoginSection">
+          <div class="admin-login-bg">
+            <div class="admin-login-card">
+              <div class="admin-login-glow"></div>
+              <div class="admin-login-inner">
+                <div class="admin-login-logo">
+                  <div class="admin-login-logo-icon">📚</div>
+                  <div class="admin-login-logo-text">
+                    <span class="alogo-name">Ustoz <em>Pro</em></span>
+                    <span class="alogo-sub">Admin Portal</span>
+                  </div>
+                </div>
+                <h2 class="admin-login-title">Xush kelibsiz 👋</h2>
+                <p class="admin-login-desc">Admin paneliga kirish uchun login va parolingizni kiriting.</p>
+                <div class="admin-input-group">
+                  <span class="admin-input-icon">👤</span>
+                  <input type="text" class="admin-input" id="adminLoginInput" placeholder="Login" autocomplete="username" onkeydown="if(event.key==='Enter')adminLogin()">
+                </div>
+                <div class="admin-input-group">
+                  <span class="admin-input-icon">🔒</span>
+                  <input type="password" class="admin-input" id="adminPassInput" placeholder="Parol" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()">
+                  <span class="admin-input-eye" onclick="togglePassView()" id="passEye">👁</span>
+                </div>
+                <button class="admin-login-btn" onclick="adminLogin()">
+                  <span id="adminLoginBtnText">🔐 Kirish</span>
+                </button>
+                <div class="admin-login-hint">
+                  <span class="hint-lock">🔑</span> Standart: <code>admin</code> / <code>UstozPro2026!</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard (faqat login bo'lganda ko'rinadi) -->
+        <div id="adminDashboard" style="display:none">
+          <div class="admin-dash-header">
+            <div>
+              <div class="section-title" style="font-size:20px">🔐 Admin Panel</div>
+              <div style="font-size:12px;color:var(--text-dim);margin-top:2px">O'qituvchi: Zamaxshariy Izdoshlari Maktabi</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="adminLogout()">↩ Chiqish</button>
+          </div>
+
+          <div class="admin-tabs">
+            <button class="atab active" id="atab-results" onclick="switchATab('results')">📊 Natijalar</button>
+            <button class="atab" id="atab-rating" onclick="switchATab('rating')">🏆 Reyting</button>
+            <button class="atab" id="atab-settings" onclick="switchATab('settings')">⚙️ Sozlamalar</button>
+          </div>
+
+          <!-- Results Tab -->
+          <div class="admin-panel active" id="apanel-results">
+            <div class="filter-row">
+              <select class="form-control select" id="filterClass" onchange="renderResultsTable()">
+                <option value="">— Barcha sinflar —</option>
+              </select>
+              <select class="form-control select" id="filterSubject" onchange="renderResultsTable()">
+                <option value="">— Barcha fanlar —</option>
+              </select>
+            </div>
+            <div class="export-btns">
+              <button class="btn btn-success btn-sm" onclick="exportToExcel()">📥 Excel</button>
+              <button class="btn btn-danger btn-sm" onclick="exportToPDF()">📄 PDF</button>
+              <button class="btn btn-secondary btn-sm" onclick="clearAllResults()">🗑️ Hammasini tozalash</button>
+            </div>
+            <div class="rating-table-wrap">
+              <table class="rating-tbl" id="resultsTable">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Ism</th><th>Sinf</th><th>Fan</th>
+                    <th>To'g'ri</th><th>%</th><th>Vaqt</th><th>Chetlanish</th><th>Sana</th><th>Amal</th>
+                  </tr>
+                </thead>
+                <tbody id="resultsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Rating Tab -->
+          <div class="admin-panel" id="apanel-rating">
+            <div class="filter-row">
+              <select class="form-control select" id="ratingFilterClass" onchange="renderRatingPanel()">
+                <option value="">— Barcha sinflar —</option>
+              </select>
+            </div>
+
+            <div id="ratingFormulaInfo" style="margin-bottom:14px"></div>
+
+            <div style="margin-bottom:6px">
+              <div class="section-title" style="font-size:15px;margin-bottom:11px">🏆 Oylik Reyting</div>
+              <div id="ratingMonthLabel" style="font-size:12px;color:var(--text-dim);margin-bottom:9px"></div>
+              <div class="rating-table-wrap">
+                <table class="rating-tbl">
+                  <thead><tr><th>#</th><th>O'quvchi</th><th>Sinf</th><th>Oxirgi test to'g'ri javoblari</th><th>Reyting balli</th></tr></thead>
+                  <tbody id="monthlyRatingBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Tab -->
+          <div class="admin-panel" id="apanel-settings">
+            <div class="setup-card">
+              <div class="setup-card-header">
+                <div class="setup-card-icon">⚙️</div>
+                <div><div class="setup-card-title">Test sozlamalari</div><div class="setup-card-subtitle">Admin tomonidan boshqariladigan parametrlar</div></div>
+              </div>
+
+              <!-- Joriy imtihon oyi -->
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <h4>Joriy Imtihon Oyi</h4>
+                  <p>Natijalar va reyting qaysi oy uchun hisoblanadi</p>
+                </div>
+                <select class="settings-select" id="settingExamMonth" onchange="saveSettings()">
+                  <option value="1">Yanvar</option>
+                  <option value="2">Fevral</option>
+                  <option value="3">Mart</option>
+                  <option value="4">Aprel</option>
+                  <option value="5" selected>May</option>
+                  <option value="6">Iyun</option>
+                  <option value="7">Iyul</option>
+                  <option value="8">Avgust</option>
+                  <option value="9">Sentabr</option>
+                  <option value="10">Oktabr</option>
+                  <option value="11">Noyabr</option>
+                  <option value="12">Dekabr</option>
+                </select>
+              </div>
+
+              <!-- Imtihon sinfi -->
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <h4>Imtihon Sinfi</h4>
+                  <p>Reyting qaysi sinf uchun ko'rsatiladi</p>
+                </div>
+                <select class="settings-select" id="settingExamClass" onchange="saveSettings()">
+                  <option value="">Barcha sinflar</option>
+                </select>
+              </div>
+
+              <!-- Ball qiymati -->
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <h4>Bir to'g'ri javob qiymati (ball)</h4>
+                  <p>Har bir to'g'ri javob uchun nechi ball beriladi</p>
+                </div>
+                <input type="number" class="settings-input" id="settingScorePerCorrect" min="0.5" max="100" step="0.5" value="5" onchange="saveSettings()">
+              </div>
+
+              <!-- Imtihon sanasi -->
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <h4>Imtihon Sanasi</h4>
+                  <p>O'quvchilar faqat shu sanada test yechishi mumkin</p>
+                </div>
+                <input type="date" class="settings-input" style="width:160px" id="settingExamDate" onchange="saveSettings()">
+              </div>
+
+              <!-- Imtihon sanasi nazoratini yoqish -->
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-label">Sana nazoratini yoqish</div>
+                  <div class="toggle-sub">Yoqilsa: o'quvchilar faqat belgilangan sanada test yechishi mumkin.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settingEnableDateControl" onchange="saveSettings()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <h4>Standart savol soni</h4>
+                  <p>Admin o'rnatgan qat'iy savol soni</p>
+                </div>
+                <input type="number" class="settings-input" id="settingQuestionCount" min="5" max="100" value="15" onchange="saveSettings()">
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <h4>Standart vaqt (daqiqa)</h4>
+                  <p>Admin o'rnatgan qat'iy test vaqti</p>
+                </div>
+                <input type="number" class="settings-input" id="settingTimeLimit" min="5" max="120" value="20" onchange="saveSettings()">
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <h4>Maksimal urinishlar soni</h4>
+                  <p>O'quvchi bir fandan necha marta test topshira oladi</p>
+                </div>
+                <input type="number" class="settings-input" id="settingMaxAttempts" min="1" max="99" value="3" onchange="saveSettings()">
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-label">O'quvchi vaqt va savol sonini tanlay oladi</div>
+                  <div class="toggle-sub">Yoqilsa: o'quvchi test setup da o'zgartira oladi.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settingAllowCustom" onchange="saveSettings()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-label">Urinishlar cheklovini faollashtirish</div>
+                  <div class="toggle-sub">Yoqilsa: o'quvchi bir fandan belgilangan martadan ko'p test topa olmaydi.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="settingEnableAttemptLimit" onchange="saveSettings()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <button class="btn btn-primary btn-md" style="margin-top:14px" onclick="saveSettings();showToast('✅','Sozlamalar saqlandi!','success')">💾 Saqlash</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ MANAGE ═══ -->
       <div class="screen" id="screen-manage">
         <div class="manage-tabs">
-          <button class="mtab active" id="mtab-classes"  onclick="switchMTab('classes')">🏫 Sinflar</button>
+          <button class="mtab active" id="mtab-classes" onclick="switchMTab('classes')">🏫 Sinflar</button>
           <button class="mtab" id="mtab-students" onclick="switchMTab('students')">👥 O'quvchilar</button>
           <button class="mtab" id="mtab-subjects" onclick="switchMTab('subjects')">📖 Fanlar</button>
         </div>
-        <!-- Classes -->
+
         <div class="manage-panel active" id="mpanel-classes">
           <div class="setup-card">
             <div class="setup-card-header"><div class="setup-card-icon">🏫</div><div><div class="setup-card-title">Yangi sinf qo'shish</div></div></div>
@@ -722,11 +513,11 @@ body::before{
             <div id="classList"></div>
           </div>
         </div>
-        <!-- Students -->
+
         <div class="manage-panel" id="mpanel-students">
           <div class="setup-card">
             <div class="setup-card-header"><div class="setup-card-icon">👥</div><div><div class="setup-card-title">O'quvchi qo'shish</div></div></div>
-            <div class="form-group"><label class="form-label">Sinf tanlang</label><select class="form-control select" id="manageClass" onchange="renderStudentList();renderSubjectList();"><option value="">— Sinfni tanlang —</option></select></div>
+            <div class="form-group"><label class="form-label">Sinf tanlang</label><select class="form-control select" id="manageClass" onchange="renderStudentList()"><option value="">— Sinfni tanlang —</option></select></div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">O'quvchi ismi</label><input type="text" class="form-control" id="newStudentName" placeholder="Ism Familiya" onkeydown="if(event.key==='Enter')addStudent()"></div>
               <div class="form-group" style="display:flex;align-items:flex-end"><button class="btn btn-primary btn-md btn-full" onclick="addStudent()">+ Qo'shish</button></div>
@@ -735,7 +526,7 @@ body::before{
             <div id="studentList"></div>
           </div>
         </div>
-        <!-- Subjects -->
+
         <div class="manage-panel" id="mpanel-subjects">
           <div class="setup-card">
             <div class="setup-card-header"><div class="setup-card-icon">📖</div><div><div class="setup-card-title">Fan qo'shish</div></div></div>
@@ -750,18 +541,18 @@ body::before{
         </div>
       </div>
 
-      <!-- ── SYNC ── -->
+      <!-- ═══ SYNC ═══ -->
       <div class="screen" id="screen-sync">
         <div class="setup-card">
           <div class="setup-card-header">
             <div class="setup-card-icon">🔄</div>
             <div><div class="setup-card-title">Ma'lumotlar bazasini yangilash</div><div class="setup-card-subtitle">Google Sheets'dan savollarni yuklab oling</div></div>
           </div>
-          <div class="info-note" style="margin-bottom:16px">💡 Savollarni Google Sheets'dan yuklab olish uchun quyidagi tugmani bosing. Ma'lumotlar qurilmangizda saqlanib qoladi va internet bo'lmasa ham test o'tkazish mumkin bo'ladi.</div>
+          <div class="info-note" style="margin-bottom:14px">💡 Savollarni Google Sheets'dan yuklab olish uchun quyidagi tugmani bosing. Ma'lumotlar qurilmangizda saqlanib qoladi va internet bo'lmasa ham test o'tkazish mumkin bo'ladi.</div>
           <button class="btn btn-primary btn-lg btn-full" id="syncMainBtn" onclick="syncData()">
             <span id="syncMainIcon">🔄</span> <span id="syncMainText">Hozir yangilash</span>
           </button>
-          <div id="syncStatusBox" style="margin-top:14px;display:none;"></div>
+          <div id="syncStatusBox" style="margin-top:13px;display:none"></div>
         </div>
       </div>
 
@@ -769,979 +560,18 @@ body::before{
   </div><!-- /main-content -->
 </div><!-- /app-shell -->
 
-<!-- ════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════ -->
-<script>
-/* ═══════════════════════════════════════════════════════
-   CONFIG
-   ─────────────────────────────────────────────────────
-   SUPABASE_URL va SUPABASE_ANON_KEY ni o'z loyihangizdan
-   oling: Supabase Dashboard > Settings > API
-   EDGE_FUNCTION_URL ni deploy qilgandan keyin o'zgartiring.
-═══════════════════════════════════════════════════════ */
-const CONFIG = {
-  // Telegram bot (mavjud integratsiya saqlanadi)
-  TG_TOKEN: "1236509656:AAH8lsLDpQ-4r5f2ZuHXxVEigrfMqdlbz9g",
-  TG_CHAT:  "727716224",
-
-  // Google Sheets CSV (savollar uchun)
-  SHEET_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT80cxkCgcYdA0OqUOTkrLHeq-wp5MU29ullRUnuTX8L5IM3F3GIxdLtgbJxFrt18unljnQgdaoyarJ/pub?output=csv",
-
-  // ▼ Supabase Edge Function URL — deploy qilgandan keyin bu yerga kiriting:
-  //   https://YOUR_PROJECT_REF.supabase.co/functions/v1/save-result
-  EDGE_FUNCTION_URL: "https://YOUR_PROJECT_REF.supabase.co/functions/v1/save-result",
-
-  // ▼ Supabase anon kalit (faqat o'qish uchun, zarur bo'lsa)
-  //   Natija yozish Edge Function SERVICE_ROLE kalit ishlatadi, shuning uchun bu yerda faqat anon.
-  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
-};
-
-/* ═══════════════════════════════════════════════════════
-   DEFAULT DATA
-═══════════════════════════════════════════════════════ */
-const DEFAULT_SUBJECTS = [
-  "Tarix","Turk tili","Geografiya","Mutolaa","Koreys tili","Xitoy tili",
-  "Informatika","Ingliz tili","Matematika","Ona tili","Kimyo-Biologiya",
-  "Tabiiy fan","Fizika","Arab tili","Rus tili"
-];
-
-const DEFAULT_STUDENTS = {
-  "5-sinf": ["Yo'ldoshaliyev Abdulahad","Nabijonova Sitora","Abdumutaliyeva Asalxon","Usmonxo'jayeva Diyoraxon","Bekmirzayev Otabek","Hakimjonov Hamidullo","Rustamova Malikaxon","Usmonaliyev Alisher","Musajonov Hojimurod","Alijonov Islombek","Imomova Xushnoza","Nu'monova Madina","Sobirov Muhammadbobur","Zuxriddinova Yasminaxon","Inomjonov Ibrohim","Bannonov Abdulloh","Saidmo'minova Muhsinaxon","Muhammadolimov Fahriddin","Odiljonova Muslimaxon"],
-  "6-sinf": ["Nosirjonova Layloxon","Muhammadaliyeva Sevaraxon","Mamasoliyeva Hadicha","To'lqinjonova Shahzoda","Mamasoliyeva Mubina","Qo'shoqboyev Muhammadaziz","Mansurjonov Hojakbar","Soliyev Shamsiddin","G'ulomjonov Muhammaddiyor","Soliyev Ziyovuddin","Rustamjonova Rayxona","Alijonov Anasxon","Yusufjonova Fotimaxon","Mamadnosirov G'olibjon","Odiljonova Salomatxon","Abdulazizova Nozimaxon"],
-  "7-sinf": ["Yo'ldoshaliyeva Farzona","Abdullayev Muslimbek","Adhamov Jahongir","Muxtorov Abdulloh","Adhamjonov Muhammadyusuf","Ergashboyev Abdulloh","Abdumutalov Abdulbosit","Akramjonov Murodillo","Ashuraliyev Ilhomjon","Omonaliyev Muhammad","Bahodirov Saidabror","Alijonov Mus'ab","Kamoliddinov Shamshodbek","Bahriddinov Muhammadjon","Nuraliyev Muhammadyasin","Xoshimjonov Dovudbek","Ibrohimov Islomjon"],
-  "8-sinf": ["Rustamova Mushtariy","Usmonaliyev Sanjarbek","Zokirjonova Zahroxon","Nurmatova Mohinabonu","Mamasoliyeva Arofatxon","Mirzajonov Fayzulloh","Zafarjonov Behruzbek","O\u02bbmasova Mohichehra","Valijonova Zeboxon","Lazizxonova Oyshabonu","Tursunov Aliy","Qodirov Bobomurod","Inomjonova Umidaxon","Ortiqboyeva Malikaxon","Adhamjonov Muhammadsaid","Qodirova Sarvinoz","Abdulazizov Mashrabbek"]
-};
-
-/* ═══════════════════════════════════════════════════════
-   STATE
-═══════════════════════════════════════════════════════ */
-const DB_KEY      = 'ustoz_pro_v40';
-const SESSION_KEY = 'ustoz_pro_session_v1';
-
-let db = (() => {
-  try { return JSON.parse(localStorage.getItem(DB_KEY)) || {}; }
-  catch { return {}; }
-})();
-
-let testState = {
-  questions: [],
-  bookmarks: new Set(),
-  answers: {},      // { questionIndex: 'a'|'b'|'c'|'d' } — localStorage uchun
-  cheats: 0,
-  startTime: null,
-  totalSecs: 0,
-  remainingSecs: 0,
-  timerInterval: null,
-  meta: {}           // { name, cls, sub }
-};
-
-/* ═══════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════ */
-function initDefaults() {
-  if (!db.classes)  db.classes  = {};
-  if (!db.subjects) db.subjects = {};
-  if (!db.results)  db.results  = [];
-  ['5-sinf','6-sinf','7-sinf','8-sinf'].forEach(cls => {
-    if (!db.classes[cls])  db.classes[cls]  = DEFAULT_STUDENTS[cls] || [];
-    if (!db.subjects[cls]) db.subjects[cls] = [...DEFAULT_SUBJECTS];
-  });
-  saveDB();
-}
-
-function saveDB() {
-  localStorage.setItem(DB_KEY, JSON.stringify(db));
-}
-
-initDefaults();
-populateClassSelects();
-renderClassList();
-updateDashboardStats();
-renderRecentResults();
-checkRestoreSession();
-
-/* ═══════════════════════════════════════════════════════
-   SESSION PERSISTENCE (localStorage)
-═══════════════════════════════════════════════════════ */
-/**
- * Joriy test holatini localStorage ga saqlash.
- * Sahifa yangilansa yoki tasodifan yopilsa ma'lumot saqlanib qoladi.
- */
-function saveSession() {
-  if (!testState.questions.length) return;
-  const sess = {
-    questions:     testState.questions,
-    bookmarks:     [...testState.bookmarks],
-    answers:       testState.answers,
-    cheats:        testState.cheats,
-    startTime:     testState.startTime ? testState.startTime.getTime() : null,
-    totalSecs:     testState.totalSecs,
-    remainingSecs: testState.remainingSecs,
-    meta:          testState.meta
-  };
-  localStorage.setItem(SESSION_KEY, JSON.stringify(sess));
-}
-
-function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
-}
-
-/**
- * Saqlangan session mavjudligini tekshirish va bannerni ko'rsatish.
- */
-function checkRestoreSession() {
-  const raw = localStorage.getItem(SESSION_KEY);
-  if (!raw) return;
-  try {
-    const sess = JSON.parse(raw);
-    if (!sess || !sess.questions || !sess.questions.length) { clearSession(); return; }
-    const banner = document.getElementById('restoreBanner');
-    const txt    = document.getElementById('restoreBannerText');
-    const m      = sess.meta || {};
-    txt.textContent = `⚠️ Tugallanmagan test: ${m.name || '?'} — ${m.sub || '?'} fani. Davom ettirasizmi?`;
-    banner.classList.add('visible');
-  } catch { clearSession(); }
-}
-
-function restoreSession() {
-  const raw = localStorage.getItem(SESSION_KEY);
-  if (!raw) return;
-  try {
-    const sess = JSON.parse(raw);
-    if (!sess || !sess.questions || !sess.questions.length) return;
-
-    testState.questions     = sess.questions;
-    testState.bookmarks     = new Set(sess.bookmarks || []);
-    testState.answers       = sess.answers || {};
-    testState.cheats        = sess.cheats  || 0;
-    testState.startTime     = sess.startTime ? new Date(sess.startTime) : new Date();
-    testState.totalSecs     = sess.totalSecs || 1200;
-    testState.remainingSecs = sess.remainingSecs || sess.totalSecs || 1200;
-    testState.meta          = sess.meta || {};
-
-    // Setup UI uchun selectlarni to'ldirish
-    if (testState.meta.cls) {
-      const sc = document.getElementById('sClass');
-      sc.value = testState.meta.cls;
-      updateUI();
-      setTimeout(() => {
-        document.getElementById('sName').value = testState.meta.name || '';
-        document.getElementById('sSub').value  = testState.meta.sub  || '';
-      }, 50);
-    }
-
-    document.getElementById('restoreBanner').classList.remove('visible');
-    resumeTest();
-  } catch (e) { clearSession(); showToast('❌','Session tiklashda xatolik','error'); }
-}
-
-function discardSession() {
-  clearSession();
-  document.getElementById('restoreBanner').classList.remove('visible');
-  showToast('🗑️','Eski session o\'chirildi','info','','2000');
-}
-
-/**
- * Saqlangan holatdan testni davom ettirish.
- */
-function resumeTest() {
-  const m = testState.meta;
-  document.getElementById('timerStudentChip').textContent = `👤 ${m.name || ''}`;
-  document.getElementById('timerSubChip').textContent     = `📚 ${m.sub  || ''}`;
-
-  renderQuestions();
-  // Saqlangan javoblarni tiklash
-  Object.entries(testState.answers).forEach(([idx, val]) => {
-    const radio = document.querySelector(`input[name="q${idx}"][value="${val}"]`);
-    if (radio) {
-      radio.checked = true;
-      document.getElementById(`qcard-${idx}`)?.classList.add('answered');
-      document.getElementById(`qdot-${idx}`)?.classList.add('answered');
-    }
-  });
-  // Bookmarklar
-  testState.bookmarks.forEach(i => {
-    document.getElementById(`bmark-${i}`)?.classList.add('bookmarked');
-    document.getElementById(`qdot-${i}`)?.classList.add('bookmarked');
-  });
-
-  navigateTo('test');
-  updateQProgress();
-  startTimer(testState.remainingSecs);
-  window.onblur = handleCheat;
-  document.addEventListener('visibilitychange', onVisibilityChange);
-}
-
-/* ═══════════════════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════════════════ */
-const SCREENS = {
-  'home':       { s:'screen-home',       n:'nav-home',   t:'Bosh sahifa',      b:'Bosh sahifa' },
-  'test-setup': { s:'screen-test-setup', n:'nav-test',   t:'Yangi test',       b:'Test sozlamalari' },
-  'test':       { s:'screen-test',       n:'nav-test',   t:'Test topshirish',  b:'Jarayonda...' },
-  'result':     { s:'screen-result',     n:'nav-test',   t:'Natijalar',        b:'Test natijalari' },
-  'manage':     { s:'screen-manage',     n:'nav-manage', t:'Boshqarish',       b:'Sinflar va o\'quvchilar' },
-  'sync':       { s:'screen-sync',       n:'nav-sync',   t:'Bazani yangilash', b:'Google Sheets sinxronizatsiya' }
-};
-
-function navigateTo(page) {
-  const cfg = SCREENS[page];
-  if (!cfg) return;
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById(cfg.s)?.classList.add('active');
-  document.getElementById(cfg.n)?.classList.add('active');
-  document.getElementById('topbarTitle').textContent = cfg.t;
-  document.getElementById('topbarBreadcrumb').innerHTML = `<span>Ustoz Pro</span> › <span>${cfg.b}</span>`;
-  if (page === 'manage') syncManageSelects();
-  if (page === 'home') { updateDashboardStats(); renderRecentResults(); }
-  if (page === 'test-setup') checkRestoreSession();
-  closeSidebar();
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-/* ═══════════════════════════════════════════════════════
-   SIDEBAR
-═══════════════════════════════════════════════════════ */
-function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); document.body.style.overflow='hidden'; }
-function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); document.body.style.overflow=''; }
-
-window.addEventListener('scroll', () => {
-  document.getElementById('topbar').classList.toggle('scrolled', window.scrollY > 10);
-});
-
-/* ═══════════════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════════════ */
-function showToast(icon, title, type='info', sub='', duration=3500) {
-  const c = document.getElementById('toastContainer');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<div class="toast-icon">${icon}</div><div class="toast-body"><div class="toast-title">${title}</div>${sub?`<div class="toast-sub">${sub}</div>`:''}</div>`;
-  c.appendChild(t);
-  setTimeout(() => { t.style.transition='all 0.3s ease'; t.style.opacity='0'; t.style.transform='translateX(20px)'; setTimeout(()=>t.remove(),300); }, parseInt(duration));
-}
-
-/* ═══════════════════════════════════════════════════════
-   SYNC — Google Sheets
-═══════════════════════════════════════════════════════ */
-let syncInProgress = false;
-
-async function syncData() {
-  if (syncInProgress) return;
-  syncInProgress = true;
-
-  const setLoading = v => {
-    ['syncBtnIcon','syncMainIcon'].forEach(id => document.getElementById(id).textContent = v?'⌛':'🔄');
-    document.getElementById('syncBtnText').textContent  = v?'Yangilanmoqda...':'Bazani yangilash';
-    document.getElementById('syncMainText').textContent = v?'Yuklanmoqda...':'Hozir yangilash';
-    const btn1 = document.getElementById('syncBtnIcon')?.closest('button');
-    if (btn1) btn1.disabled = v;
-    document.getElementById('syncMainBtn').disabled = v;
-  };
-
-  setLoading(true);
-  try {
-    const res  = await fetch(CONFIG.SHEET_CSV);
-    const csv  = await res.text();
-    const rows = csv.split('\n').slice(1);
-    db.qs = {};
-    let count = 0;
-    rows.forEach(r => {
-      // CSV qatorini parse qilish (vergul bilan ajratilgan, qo'shtirnoqli maydonlarni hisobga olish)
-      const cols = parseCSVRow(r);
-      if (cols.length >= 8) {
-        const [sinf,fan,q,a,b,c,d,cr,...rest] = cols;
-        const hint = rest[0]||'';
-        if (!sinf||!fan||!q) return;
-        if (!db.qs[sinf])     db.qs[sinf]     = {};
-        if (!db.qs[sinf][fan]) db.qs[sinf][fan] = [];
-        db.qs[sinf][fan].push({ q:q.trim(), a:a.trim(), b:b.trim(), c:c.trim(), d:d.trim(), cr:cr.toLowerCase().trim(), hint:hint.trim() });
-        count++;
-      }
-    });
-    saveDB();
-    document.getElementById('syncStatusText').textContent = `Tayyor · ${count} ta savol yuklandi`;
-    const sb = document.getElementById('syncStatusBox');
-    sb.style.display = 'block';
-    sb.innerHTML = `<div style="padding:14px;background:var(--success-pale);border:1px solid rgba(5,150,105,0.2);border-radius:var(--r-sm);font-size:13px;color:#065f46;display:flex;gap:10px;align-items:center;">✅ <span>Muvaffaqiyatli yangilandi! <b>${count}</b> ta savol yuklandi.</span></div>`;
-    showToast('✅','Baza yangilandi!','success',`${count} ta savol yuklandi`);
-  } catch(e) {
-    showToast('❌','Xatolik yuz berdi!','error','Internetni tekshiring va qayta urinib ko\'ring');
-  }
-  setLoading(false);
-  syncInProgress = false;
-}
-
-/** CSV qatorini to'g'ri parse qilish (vergul ichidagi qo'shtirnoqli matnlar) */
-function parseCSVRow(row) {
-  const result = [];
-  let cur = '', inQ = false;
-  for (let i = 0; i < row.length; i++) {
-    const ch = row[i];
-    if (ch === '"') { inQ = !inQ; }
-    else if (ch === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
-    else { cur += ch; }
-  }
-  result.push(cur.trim());
-  return result;
-}
-
-/* ═══════════════════════════════════════════════════════
-   CLASS MANAGEMENT
-═══════════════════════════════════════════════════════ */
-function populateClassSelects() {
-  const classes = Object.keys(db.classes);
-  ['sClass','manageClass','manageClassSub'].forEach(id => {
-    const sel = document.getElementById(id);
-    if (!sel) return;
-    const cur = sel.value;
-    sel.innerHTML = `<option value="">— Sinfni tanlang —</option>`;
-    classes.forEach(c => sel.innerHTML += `<option value="${esc(c)}">${esc(c)}</option>`);
-    if (cur && classes.includes(cur)) sel.value = cur;
-  });
-}
-function syncManageSelects() {
-  populateClassSelects();
-  const mc = document.getElementById('manageClass')?.value;
-  if (mc) { renderStudentList(); renderSubjectList(); }
-  renderClassList();
-}
-function updateUI() {
-  const cls = document.getElementById('sClass').value;
-  const sn  = document.getElementById('sName');
-  const ss  = document.getElementById('sSub');
-  sn.innerHTML = `<option value="">— O'quvchini tanlang —</option>`;
-  ss.innerHTML = `<option value="">— Fanni tanlang —</option>`;
-  if (cls) {
-    [...(db.classes[cls]||[])].sort().forEach(s => sn.innerHTML += `<option value="${esc(s)}">${esc(s)}</option>`);
-    (db.subjects[cls]||DEFAULT_SUBJECTS).forEach(f => ss.innerHTML += `<option value="${esc(f)}">${esc(f)}</option>`);
-  }
-}
-function addClass() {
-  const name = document.getElementById('newClassName').value.trim();
-  if (!name) { showToast('⚠️','Sinf nomini kiriting!','warning'); return; }
-  if (db.classes[name]) { showToast('⚠️','Bu sinf allaqachon mavjud!','warning'); return; }
-  db.classes[name]  = [];
-  db.subjects[name] = [...DEFAULT_SUBJECTS];
-  saveDB(); populateClassSelects(); renderClassList();
-  document.getElementById('newClassName').value = '';
-  showToast('✅',`"${name}" sinfi qo'shildi!`,'success');
-  updateDashboardStats();
-}
-function removeClass(name) {
-  if (!confirm(`"${name}" sinfini o'chirasizmi? Barcha o'quvchilar ham o'chadi.`)) return;
-  delete db.classes[name]; delete db.subjects[name];
-  saveDB(); populateClassSelects(); renderClassList();
-  showToast('🗑️',`"${name}" o'chirildi.`,'info');
-  updateDashboardStats();
-}
-function renderClassList() {
-  const classes = Object.keys(db.classes);
-  document.getElementById('classCount').textContent = classes.length;
-  document.getElementById('classList').innerHTML = classes.length===0
-    ? `<div style="color:var(--text-dim);font-size:13px;padding:12px 0;">Sinflar yo'q.</div>`
-    : classes.map(c=>`<div class="list-item"><div class="li-icon">🏫</div><span class="li-text"><b>${esc(c)}</b> — ${(db.classes[c]||[]).length} o'quvchi</span><button class="li-del" onclick="removeClass('${esc(c)}')">🗑️</button></div>`).join('');
-}
-
-/* ═══════════════════════════════════════════════════════
-   STUDENT MANAGEMENT
-═══════════════════════════════════════════════════════ */
-function addStudent() {
-  const cls  = document.getElementById('manageClass').value;
-  const name = document.getElementById('newStudentName').value.trim();
-  if (!cls)  { showToast('⚠️','Avval sinfni tanlang!','warning'); return; }
-  if (!name) { showToast('⚠️','O\'quvchi ismini kiriting!','warning'); return; }
-  if (!db.classes[cls]) db.classes[cls] = [];
-  if (db.classes[cls].includes(name)) { showToast('⚠️','Bu o\'quvchi allaqachon mavjud!','warning'); return; }
-  db.classes[cls].push(name);
-  saveDB(); renderStudentList(); renderClassList();
-  document.getElementById('newStudentName').value = '';
-  showToast('✅',`"${name}" qo'shildi!`,'success');
-  updateDashboardStats();
-}
-function removeStudent(cls, name) {
-  db.classes[cls] = db.classes[cls].filter(s=>s!==name);
-  saveDB(); renderStudentList(); renderClassList();
-  showToast('🗑️',`"${name}" o'chirildi.`,'info');
-  updateDashboardStats();
-}
-function renderStudentList() {
-  const cls = document.getElementById('manageClass')?.value;
-  const sts = cls ? (db.classes[cls]||[]) : [];
-  document.getElementById('studentCount').textContent = sts.length;
-  document.getElementById('studentList').innerHTML = sts.length===0
-    ? `<div style="color:var(--text-dim);font-size:13px;padding:12px 0;">${cls?'O\'quvchilar yo\'q.':'Sinfni tanlang.'}</div>`
-    : [...sts].sort().map(s=>`<div class="list-item"><div class="li-icon">👤</div><span class="li-text">${esc(s)}</span><button class="li-del" onclick="removeStudent('${esc(cls)}','${esc(s).replace(/'/g,"\\'")}')">🗑️</button></div>`).join('');
-}
-
-/* ═══════════════════════════════════════════════════════
-   SUBJECT MANAGEMENT
-═══════════════════════════════════════════════════════ */
-function addSubject() {
-  const cls  = document.getElementById('manageClassSub')?.value;
-  const name = document.getElementById('newSubName').value.trim();
-  if (!cls)  { showToast('⚠️','Avval sinfni tanlang!','warning'); return; }
-  if (!name) { showToast('⚠️','Fan nomini kiriting!','warning'); return; }
-  if (!db.subjects[cls]) db.subjects[cls] = [];
-  if (db.subjects[cls].includes(name)) { showToast('⚠️','Bu fan allaqachon mavjud!','warning'); return; }
-  db.subjects[cls].push(name);
-  saveDB(); renderSubjectList();
-  document.getElementById('newSubName').value = '';
-  showToast('✅',`"${name}" fani qo'shildi!`,'success');
-}
-function removeSubject(cls, name) {
-  db.subjects[cls] = db.subjects[cls].filter(s=>s!==name);
-  saveDB(); renderSubjectList();
-  showToast('🗑️',`"${name}" fani o'chirildi.`,'info');
-}
-function renderSubjectList() {
-  const cls  = document.getElementById('manageClassSub')?.value || document.getElementById('manageClass')?.value;
-  const subs = cls ? (db.subjects[cls]||[]) : [];
-  const el   = document.getElementById('subjectList');
-  if (!el) return;
-  document.getElementById('subjectCount').textContent = subs.length;
-  el.innerHTML = subs.length===0
-    ? `<div style="color:var(--text-dim);font-size:13px;padding:12px 0;">${cls?'Fanlar yo\'q.':'Sinfni tanlang.'}</div>`
-    : subs.map(s=>`<div class="list-item"><div class="li-icon">📖</div><span class="li-text">${esc(s)}</span><button class="li-del" onclick="removeSubject('${esc(cls)}','${esc(s).replace(/'/g,"\\'")}')">🗑️</button></div>`).join('');
-}
-
-/* ═══════════════════════════════════════════════════════
-   MANAGE TABS
-═══════════════════════════════════════════════════════ */
-function switchMTab(tab) {
-  ['classes','students','subjects'].forEach(t => {
-    document.getElementById(`mtab-${t}`)?.classList.toggle('active',t===tab);
-    document.getElementById(`mpanel-${t}`)?.classList.toggle('active',t===tab);
-  });
-  if (tab==='students') renderStudentList();
-  if (tab==='subjects') renderSubjectList();
-}
-
-/* ═══════════════════════════════════════════════════════
-   DASHBOARD
-═══════════════════════════════════════════════════════ */
-function updateDashboardStats() {
-  const totalStudents = Object.values(db.classes).reduce((s,a)=>s+a.length,0);
-  const allSubs = new Set();
-  Object.values(db.subjects).forEach(a=>a.forEach(s=>allSubs.add(s)));
-  document.getElementById('statStudentsCount').textContent = totalStudents;
-  document.getElementById('statSubjectsCount').textContent = allSubs.size;
-  document.getElementById('statTotalTests').textContent    = db.results.length;
-  if (db.results.length>0) {
-    const avg = Math.round(db.results.reduce((s,r)=>s+r.percent,0)/db.results.length);
-    document.getElementById('statAvgScore').textContent = avg+'%';
-    const tr = document.getElementById('statAvgTrend');
-    tr.className = avg>=70?'stat-trend trend-up':'stat-trend trend-down';
-    tr.textContent = avg>=70?'↑ Yaxshi daraja':'↓ Yaxshilash kerak';
-  }
-}
-
-function renderRecentResults() {
-  const list = document.getElementById('recentResultsList');
-  if (!db.results||db.results.length===0) {
-    list.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-dim);font-size:14px;">📭 Hali test natijasi yo'q. Birinchi testni boshlang!</div>`;
-    return;
-  }
-  const recent = [...db.results].reverse().slice(0,5);
-  list.innerHTML = recent.map(r => {
-    const c  = r.percent>=90?'success':r.percent>=70?'primary':r.percent>=50?'warning':'danger';
-    const cV = r.percent>=90?'var(--success)':r.percent>=70?'var(--primary)':r.percent>=50?'var(--warning)':'var(--danger)';
-    const em = r.percent>=90?'🥇':r.percent>=70?'🥈':r.percent>=50?'🥉':'📉';
-    const gr = r.percent>=90?'A':r.percent>=70?'B':r.percent>=50?'C':'D';
-    return `<div class="result-item"><div class="ri-icon" style="background:var(--${c}-pale)">${em}</div><div class="ri-info"><div class="ri-name">${esc(r.name)}</div><div class="ri-meta">${esc(r.cls)} · ${esc(r.sub)} · ${esc(r.time)}</div></div><div class="ri-score"><div class="ri-pct" style="color:${cV}">${r.percent}%</div><div class="ri-grade" style="color:${cV}">${gr} daraja</div></div></div>`;
-  }).join('');
-}
-
-function showAllResults() {
-  showToast('📊','Barcha natijalar','info','Backend ulanishi kerak',3000);
-}
-
-/* ═══════════════════════════════════════════════════════
-   START TEST
-═══════════════════════════════════════════════════════ */
-function startTest() {
-  const cls   = document.getElementById('sClass').value;
-  const sub   = document.getElementById('sSub').value;
-  const name  = document.getElementById('sName').value;
-  const count = parseInt(document.getElementById('sCount').value) || 15;
-  const mins  = parseInt(document.getElementById('sTime').value) || 20;
-
-  if (!cls||!sub||!name) { showToast('⚠️','Barcha maydonlarni to\'ldiring!','warning'); return; }
-  if (!db.qs||!db.qs[cls]||!db.qs[cls][sub]||db.qs[cls][sub].length===0) {
-    showToast('📚','Savollar yuklanmagan!','error',`${cls} · ${sub} uchun avval bazani yangilang`);
-    return;
-  }
-
-  const pool = db.qs[cls][sub];
-  const take = Math.min(count, pool.length);
-  testState.questions     = [...pool].sort(()=>Math.random()-0.5).slice(0,take);
-  testState.bookmarks     = new Set();
-  testState.answers       = {};
-  testState.cheats        = 0;
-  testState.startTime     = new Date();
-  testState.totalSecs     = mins * 60;
-  testState.remainingSecs = mins * 60;
-  testState.meta          = { name, cls, sub, count: take, mins };
-
-  document.getElementById('timerDigits').textContent     = `${mins}:00`;
-  document.getElementById('timerStudentChip').textContent = `👤 ${name}`;
-  document.getElementById('timerSubChip').textContent     = `📚 ${sub}`;
-
-  renderQuestions();
-  navigateTo('test');
-  startTimer(testState.remainingSecs);
-  saveSession();
-
-  window.onblur = handleCheat;
-  document.addEventListener('visibilitychange', onVisibilityChange);
-}
-
-/* ═══════════════════════════════════════════════════════
-   TIMER
-═══════════════════════════════════════════════════════ */
-function startTimer(initialSecs) {
-  if (testState.timerInterval) clearInterval(testState.timerInterval);
-  let remaining = initialSecs;
-  const timerEl  = document.getElementById('stickyTimer');
-  const timerDig = document.getElementById('timerDigits');
-  const timerBar = document.getElementById('timerBarFill');
-  const timerPct = document.getElementById('timerPct');
-
-  const tick = () => {
-    testState.remainingSecs = remaining;
-    const m   = Math.floor(remaining/60);
-    const s   = remaining%60;
-    const pct = (remaining/testState.totalSecs)*100;
-    timerDig.textContent = `${m}:${s<10?'0'+s:s}`;
-    timerBar.style.width = pct+'%';
-    timerPct.textContent = Math.round(pct)+'%';
-    timerEl.classList.remove('warning','danger');
-    if (remaining<=60)                             timerEl.classList.add('danger');
-    else if (remaining<=testState.totalSecs*0.25) timerEl.classList.add('warning');
-
-    // Har 10 soniyada session saqlash
-    if (remaining % 10 === 0) saveSession();
-
-    if (--remaining < 0) {
-      clearInterval(testState.timerInterval);
-      showToast('⏰','Vaqt tugadi!','error','Test avtomatik yakunlandi');
-      finishTest();
-    }
-  };
-  tick();
-  testState.timerInterval = setInterval(tick, 1000);
-}
-
-/* ═══════════════════════════════════════════════════════
-   RENDER QUESTIONS
-═══════════════════════════════════════════════════════ */
-function renderQuestions() {
-  const area  = document.getElementById('questionsArea');
-  const dotsC = document.getElementById('qDots');
-  const total = testState.questions.length;
-  document.getElementById('qProgLabel').textContent = `0 / ${total}`;
-
-  area.innerHTML = testState.questions.map((q,i) => `
-    <div class="q-card" id="qcard-${i}" style="animation-delay:${i*0.03}s">
-      <div class="q-card-top">
-        <div class="q-card-left">
-          <div class="q-num" id="qnum-${i}">${String(i+1).padStart(2,'0')}</div>
-          <p class="q-text">${esc(q.q)}</p>
-        </div>
-        <div class="q-actions">
-          <div class="q-action-btn" id="bmark-${i}" onclick="toggleBookmark(${i})" title="Bayroqcha">🔖</div>
-        </div>
-      </div>
-      <div class="options-list">
-        ${['a','b','c','d'].filter(o=>q[o]).map(opt=>`
-          <label class="option-item" onclick="markAnswered(${i},'${opt}')">
-            <input type="radio" name="q${i}" value="${opt}">
-            <span class="option-letter">${opt.toUpperCase()}</span>
-            <span class="option-txt">${esc(q[opt])}</span>
-          </label>`).join('')}
-      </div>
-      <div class="hint-section">
-        <div class="hint-btn" id="hintbtn-${i}" onclick="toggleHint(${i})">💡 Maslahat (O'qituvchi uchun)</div>
-        <div class="hint-content" id="hint-${i}">
-          ${q.hint ? esc(q.hint) : 'ℹ️ Bu savolga doit izoh yo\'q. Sheets\'da 9-ustun (I) ni to\'ldiring.'}
-        </div>
-      </div>
-    </div>`).join('');
-
-  dotsC.innerHTML = testState.questions.map((_,i)=>`
-    <div class="q-dot" id="qdot-${i}" onclick="scrollToQ(${i})">${i+1}</div>`).join('');
-}
-
-/* ═══════════════════════════════════════════════════════
-   QUESTION HELPERS
-═══════════════════════════════════════════════════════ */
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-/**
- * Savol dot bosilganda silliq scroll qilish + aktiv card stilini ko'rsatish.
- */
-function scrollToQ(i) {
-  const card = document.getElementById(`qcard-${i}`);
-  if (!card) return;
-  // Avvalgi active-card ni olib tashlash
-  document.querySelectorAll('.q-card.active-card').forEach(c => c.classList.remove('active-card'));
-  card.classList.add('active-card');
-  card.scrollIntoView({ behavior:'smooth', block:'center' });
-  // 1.5s dan keyin active-card ni olib tashlash
-  setTimeout(() => card.classList.remove('active-card'), 1500);
-}
-
-function markAnswered(i, optVal) {
-  testState.answers[i] = optVal;
-  document.getElementById(`qcard-${i}`)?.classList.add('answered');
-  const dot = document.getElementById(`qdot-${i}`);
-  if (dot) dot.classList.add('answered');
-  updateQProgress();
-  saveSession(); // Javob saqlangan zahoti session yangilanadi
-}
-
-function updateQProgress() {
-  const total    = testState.questions.length;
-  const answered = Object.keys(testState.answers).length;
-  const pct = Math.round((answered/total)*100);
-  document.getElementById('qProgFill').style.width = pct+'%';
-  document.getElementById('qProgLabel').textContent = `${answered} / ${total}`;
-  document.getElementById('qProgPct').textContent   = pct+'%';
-}
-
-/* ═══════════════════════════════════════════════════════
-   BOOKMARK
-═══════════════════════════════════════════════════════ */
-function toggleBookmark(i) {
-  const btn = document.getElementById(`bmark-${i}`);
-  const dot = document.getElementById(`qdot-${i}`);
-  if (testState.bookmarks.has(i)) {
-    testState.bookmarks.delete(i);
-    btn?.classList.remove('bookmarked');
-    dot?.classList.remove('bookmarked');
-    showToast('🔖','Bayroqcha olib tashlandi','info','',1800);
-  } else {
-    testState.bookmarks.add(i);
-    btn?.classList.add('bookmarked');
-    dot?.classList.add('bookmarked');
-    showToast('🔖','Belgilandi!','warning','Keyinroq qaytib kelishingiz mumkin',1800);
-  }
-  saveSession();
-}
-
-/* ═══════════════════════════════════════════════════════
-   HINT POPUP
-═══════════════════════════════════════════════════════ */
-function toggleHint(i) {
-  const el  = document.getElementById(`hint-${i}`);
-  const btn = document.getElementById(`hintbtn-${i}`);
-  if (!el) return;
-  const isVisible = el.classList.contains('visible');
-  el.classList.toggle('visible', !isVisible);
-  if (btn) btn.textContent = isVisible ? "💡 Maslahat (O'qituvchi uchun)" : '💡 Maslahatni yashirish';
-}
-
-/* ═══════════════════════════════════════════════════════
-   ANTI-CHEAT
-═══════════════════════════════════════════════════════ */
-function handleCheat() {
-  testState.cheats++;
-  saveSession();
-  showCheatAlert();
-}
-function onVisibilityChange() { if (document.hidden) handleCheat(); }
-function showCheatAlert() {
-  document.querySelector('.cheat-overlay')?.remove();
-  const ov = document.createElement('div');
-  ov.className = 'cheat-overlay';
-  ov.innerHTML = `<div class="cheat-modal">
-    <span class="cheat-icon">🚫</span>
-    <h2 class="cheat-title">Sahifadan chiqish taqiqlangan!</h2>
-    <p class="cheat-desc">Testni topshirayotganda boshqa ilovalar yoki tablarni ochish qat'iyan man etiladi. Bu holat o'qituvchiga yuboriladi.</p>
-    <div class="cheat-count-box">Ogohlantirish: <b>${testState.cheats}</b> marta</div>
-    <button class="btn btn-primary btn-full btn-md" onclick="this.closest('.cheat-overlay').remove()">✓ Testni davom ettirish</button>
-  </div>`;
-  document.body.appendChild(ov);
-}
-
-/* ═══════════════════════════════════════════════════════
-   CONFIRM & FINISH TEST
-═══════════════════════════════════════════════════════ */
-function confirmFinish() {
-  const total      = testState.questions.length;
-  const answered   = Object.keys(testState.answers).length;
-  const unanswered = total - answered;
-  if (unanswered>0 && !confirm(`Hali ${unanswered} ta savol javoblanmagan. Shunga qaramay yakunlaysizmi?`)) return;
-  finishTest();
-}
-
-async function finishTest() {
-  clearInterval(testState.timerInterval);
-  window.onblur = null;
-  document.removeEventListener('visibilitychange', onVisibilityChange);
-
-  let score = 0;
-  const review = [];
-
-  testState.questions.forEach((q,i) => {
-    // DOM dan yoki saqlangan answers dan javobni olish
-    const sel     = document.querySelector(`input[name="q${i}"]:checked`)?.value || testState.answers[i];
-    const correct = q.cr?.toLowerCase().trim();
-    const isRight = sel && sel === correct;
-    if (isRight) score++;
-    review.push({ q:q.q, sel: sel ? (q[sel]||sel) : 'Belgilanmagan', cr: q[correct]||correct||'?', isRight });
-  });
-
-  const total   = testState.questions.length;
-  const percent = Math.round((score/total)*100);
-  const elapsed = Math.round((new Date() - testState.startTime) / 1000);
-  const elMin   = Math.floor(elapsed/60);
-  const elSec   = elapsed%60;
-  const rating  = parseFloat((score * 5.45).toFixed(2));
-
-  const result = {
-    name:    testState.meta.name || document.getElementById('sName').value,
-    cls:     testState.meta.cls  || document.getElementById('sClass').value,
-    sub:     testState.meta.sub  || document.getElementById('sSub').value,
-    score, total, percent, rating,
-    cheat:   testState.cheats,
-    elapsed: `${elMin}:${elSec<10?'0'+elSec:elSec}`,
-    time:    new Date().toLocaleString('uz-UZ')
-  };
-
-  db.results.push(result);
-  saveDB();
-  clearSession(); // Test yakunlangach session o'chiriladi
-
-  buildResultScreen(result, review, elapsed);
-  navigateTo('result');
-
-  if (percent>=70) launchConfetti(percent);
-
-  // Backend yuborish (background)
-  sendResults(result);
-}
-
-/* ═══════════════════════════════════════════════════════
-   BUILD RESULT SCREEN
-═══════════════════════════════════════════════════════ */
-function buildResultScreen(result, review, elapsedSec) {
-  const { name, cls, sub, score, total, percent, rating, cheat, elapsed } = result;
-
-  let emoji, msg;
-  if      (percent>=90) { emoji='🥇'; msg="Ajoyib! Siz zo'r natija ko'rsatdingiz! Davom eting!"; }
-  else if (percent>=70) { emoji='🥈'; msg="Yaxshi! Yana bir oz harakat bilan mukammal bo'ladi."; }
-  else if (percent>=50) { emoji='🥉'; msg="O'rtacha. Ko'proq takrorlash kerak."; }
-  else                  { emoji='😔'; msg="Qoniqarsiz. Mavzularni yana bir bor o'qib chiqing."; }
-
-  document.getElementById('resultEmoji').textContent = emoji;
-  document.getElementById('resStudentName').textContent = name;
-
-  // SVG Circle Progress animatsiyasi
-  const circumference = 2 * Math.PI * 65; // ≈ 408.4
-  const offset = circumference * (1 - percent/100);
-  const fillEl = document.getElementById('circFill');
-
-  // Gradient rangini foizga qarab o'zgartirish
-  let strokeUrl;
-  if      (percent>=90) strokeUrl='url(#circGradGreen)';
-  else if (percent>=70) strokeUrl='url(#circGrad)';
-  else if (percent>=50) strokeUrl='url(#circGradOrange)';
-  else                  strokeUrl='url(#circGradRed)';
-
-  fillEl.setAttribute('stroke', strokeUrl);
-  fillEl.style.strokeDasharray  = `${circumference}`;
-  fillEl.style.strokeDashoffset = `${circumference}`; // boshlang'ich holat
-
-  // Foiz textini ham animatsiya qilish
-  const pctTextEl = document.getElementById('circPctText');
-  if (pctTextEl) pctTextEl.textContent = '0%';
-
-  setTimeout(() => {
-    fillEl.style.strokeDashoffset = `${offset}`;
-    // Raqam countUp animatsiyasi
-    let current = 0;
-    const step  = percent/60;
-    const anim  = setInterval(() => {
-      current = Math.min(current+step, percent);
-      if (pctTextEl) pctTextEl.textContent = Math.round(current)+'%';
-      if (current>=percent) clearInterval(anim);
-    }, 25);
-  }, 200);
-
-  const elMin = Math.floor(elapsedSec/60);
-  const elSec = elapsedSec%60;
-
-  document.getElementById('resMetaTags').innerHTML = `
-    <span class="meta-pill">🏫 ${esc(cls)}</span>
-    <span class="meta-pill">📚 ${esc(sub)}</span>
-    <span class="meta-pill">⏱ ${elMin}m ${elSec}s</span>
-    <span class="meta-pill">📅 ${new Date().toLocaleDateString('uz-UZ')}</span>`;
-
-  document.getElementById('resScore').textContent   = `${score}/${total}`;
-  document.getElementById('resPercent').textContent = `${percent}%`;
-  document.getElementById('resRating').textContent  = `${rating}`;
-  document.getElementById('resCheat').textContent   = cheat;
-  document.getElementById('resMsgText').textContent = msg;
-
-  const wrongCount = review.filter(r=>!r.isRight).length;
-  document.getElementById('reviewBadge').textContent = `${wrongCount} ta xato`;
-
-  document.getElementById('reviewList').innerHTML = review.map((r,i)=>`
-    <div class="review-item ${r.isRight?'review-correct':'review-wrong'}" style="animation-delay:${i*0.02}s">
-      <p class="review-q"><b>${i+1}.</b> ${esc(r.q)}</p>
-      ${!r.isRight?`
-        <div class="review-answer-row"><span class="review-dot dot-wrong"></span><span class="ans-lbl">Sizning javobingiz:&nbsp;</span><span class="ans-wrong">${esc(r.sel)}</span></div>
-        <div class="review-answer-row"><span class="review-dot dot-correct"></span><span class="ans-lbl">To'g'ri javob:&nbsp;</span><span class="ans-right">${esc(r.cr)}</span></div>`:`
-        <div class="review-answer-row"><span class="review-dot dot-correct"></span><span class="ans-lbl">Javob:&nbsp;</span><span class="ans-right">${esc(r.cr)} ✓</span></div>`}
-    </div>`).join('');
-}
-
-/* ═══════════════════════════════════════════════════════
-   CONFETTI — Canvas animatsiyasi
-═══════════════════════════════════════════════════════ */
-function launchConfetti(percent) {
-  const canvas = document.getElementById('confetti-canvas');
-  canvas.style.display = 'block';
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const ctx = canvas.getContext('2d');
-
-  const COLORS = ['#2563eb','#7c3aed','#059669','#d97706','#ec4899','#06b6d4','#f59e0b','#10b981','#f43f5e'];
-  const COUNT  = percent>=90 ? 220 : percent>=70 ? 140 : 80;
-
-  // Har bir konfetti zarrasi
-  const pieces = Array.from({ length: COUNT }, () => ({
-    x:    Math.random() * canvas.width,
-    y:    -Math.random() * canvas.height * 0.5,    // yuqoridan tushadi
-    w:    Math.random() * 12 + 6,
-    h:    Math.random() * 7  + 3,
-    rot:  Math.random() * 360,
-    rotV: (Math.random()-0.5) * 8,
-    color: COLORS[Math.floor(Math.random()*COLORS.length)],
-    vy:  Math.random() * 2 + 1.5,
-    vx:  (Math.random()-0.5) * 3,
-    shape: Math.random() > 0.5 ? 'rect' : 'circle',  // shakl xilma-xilligi
-  }));
-
-  let frame = 0;
-  const MAX = 260;
-
-  const draw = () => {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    pieces.forEach(p => {
-      ctx.save();
-      ctx.translate(p.x + p.w/2, p.y + p.h/2);
-      ctx.rotate(p.rot * Math.PI / 180);
-      ctx.fillStyle  = p.color;
-      ctx.globalAlpha = Math.min(1, (MAX-frame)/50);
-
-      if (p.shape==='circle') {
-        ctx.beginPath();
-        ctx.arc(0, 0, p.w/2, 0, Math.PI*2);
-        ctx.fill();
-      } else {
-        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-      }
-
-      ctx.restore();
-
-      p.y   += p.vy;
-      p.x   += p.vx;
-      p.rot += p.rotV;
-      p.vy  += 0.06;  // tortishish
-      p.vx  *= 0.999; // havo qarshiligi
-    });
-
-    frame++;
-    if (frame < MAX) {
-      requestAnimationFrame(draw);
-    } else {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      canvas.style.display = 'none';
-    }
-  };
-  requestAnimationFrame(draw);
-}
-
-/* ═══════════════════════════════════════════════════════
-   SEND RESULTS — Supabase Edge Function + Telegram
-═══════════════════════════════════════════════════════ */
-async function sendResults(d) {
-  // ─── 1. Supabase Edge Function ───────────────────
-  // "YOUR_PROJECT_REF" ni o'z loyihangiz bilan almashtiring
-  const edgeUrl = "https://uoimvtnfnioujwgixqba.supabase.co/functions/v1/save-result";
-
-  if (!edgeUrl.includes('https://uoimvtnfnioujwgixqba.supabase.co/functions/v1/save-result')) {
-    try {
-      const response = await fetch(edgeUrl, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name:    d.name,
-          cls:     d.cls,
-          sub:     d.sub,
-          score:   d.score,
-          total:   d.total,
-          elapsed: d.elapsed,
-          cheat:   d.cheat,
-          time:    d.time
-        })
-      });
-      if (response.ok) {
-        const json = await response.json();
-        console.log('Supabase saqlandi:', json);
-        showToast('✅','Natija bulutga saqlandi!','success',`Rating ball: ${json.rating_score||d.rating}`,3000);
-      } else {
-        const errText = await response.text();
-        console.error('Supabase xato:', errText);
-        showToast('⚠️','Natija saqlashda xatolik','warning','Lokal saqlandi, keyinroq sinab ko\'ring',4000);
-      }
-    } catch (err) {
-      console.error('Edge Function muloqoti xatosi:', err);
-    }
-  } else {
-    console.warn('Edge Function URL konfiguratsiya qilinmagan. CONFIG.EDGE_FUNCTION_URL ni o\'zgartiring.');
-  }
-
-  // ─── 2. Telegram bot ─────────────────────────────
-  const grade = d.percent>=90?'A':d.percent>=70?'B':d.percent>=50?'C':'D';
-  const tgText =
-    `📊 *YANGI TEST NATIJASI*\n\n` +
-    `👤 *O'quvchi:* ${d.name}\n` +
-    `🏫 *Sinf:* ${d.cls}\n` +
-    `📚 *Fan:* ${d.sub}\n` +
-    `✅ *To'g'ri:* ${d.score} / ${d.total}\n` +
-    `📈 *Foiz:* ${d.percent}%\n` +
-    `🏆 *Daraja:* ${grade}\n` +
-    `⭐ *Rating ball:* ${d.rating}\n` +
-    `⏱ *Sarflangan vaqt:* ${d.elapsed}\n` +
-    `⚠️ *Chetlanish:* ${d.cheat} marta\n` +
-    `🕒 *Sana:* ${d.time}`;
-
-  fetch(`https://api.telegram.org/bot${CONFIG.TG_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: CONFIG.TG_CHAT, text: tgText, parse_mode: 'Markdown' })
-  }).catch(() => {});
-}
-
-/* ═══════════════════════════════════════════════════════
-   beforeunload — test davomida sahifa yopilishiga ogohlantirish
-═══════════════════════════════════════════════════════ */
-window.addEventListener('beforeunload', (e) => {
-  if (testState.questions.length > 0 && document.getElementById('screen-test').classList.contains('active')) {
-    saveSession(); // Oxirgi holatni saqlash
-    e.preventDefault();
-    e.returnValue = 'Test davom etmoqda. Sahifani yopishni xohlaysizmi?';
-    return e.returnValue;
-  }
-});
-</script>
+<!-- ANSWER LOCK MODAL -->
+<div class="lock-modal-overlay hidden" id="answerLockOverlay">
+  <div class="lock-modal">
+    <span class="lock-icon">🔒</span>
+    <div class="lock-title">Parol talab qilinadi</div>
+    <div class="lock-desc">To'g'ri javoblarni ko'rish uchun o'qituvchi parolini kiriting.</div>
+    <input type="password" class="lock-input" id="answerPasswordInput" placeholder="Parolni kiriting" onkeydown="if(event.key==='Enter')checkAnswerPassword()">
+    <button class="btn btn-primary btn-full btn-md" onclick="checkAnswerPassword()">🔓 Kirish</button>
+    <button class="btn btn-secondary btn-full btn-sm" style="margin-top:8px" onclick="closeAnswerLockModal()">Bekor qilish</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
