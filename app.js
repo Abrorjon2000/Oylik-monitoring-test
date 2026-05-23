@@ -6,12 +6,14 @@ const CONFIG = {
   TG_CHAT:     "727716224",
   SHEET_CSV:   "https://docs.google.com/spreadsheets/d/e/2PACX-1vT80cxkCgcYdA0OqUOTkrLHeq-wp5MU29ullRUnuTX8L5IM3F3GIxdLtgbJxFrt18unljnQgdaoyarJ/pub?output=csv",
   SUPABASE_URL:"https://uoimvtnfnioujwgixqba.supabase.co/functions/v1/save-result",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvaW12dG5mbmlvdWp3Z2l4cWJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MjA1MDAwMDAwMH0.PLACEHOLDER",
+  // ⬆️ Bu yerga Supabase Dashboard → Settings → API → anon/public kalitini joylashtiring
   STORAGE_KEY: "ustoz_pro_v60",
   SESSION_KEY: "ustoz_pro_session_v4",
   SETTINGS_KEY:"ustoz_pro_settings_v4",
-  ADMIN_LOGIN: "admin",           // standart login
-  ADMIN_PASS:  "UstozPro2026!",   // standart parol
-  ANSWER_PASS: "UstozPro2026!"    // to'g'ri javoblar paroli
+  ADMIN_LOGIN: "admin",
+  ADMIN_PASS:  "UstozPro2026!",
+  ANSWER_PASS: "UstozPro2026!"
 };
 
 /* ═══════════════════════════════════════════════
@@ -1418,6 +1420,50 @@ initDefaults();
 populateClassSelects();
 renderClassList();
 updateDashboardStats();
+async function sendResults(d) {
+  // Supabase bazangizdagi ustun nomlariga (name, class, subject...) to'g'ri moslangan payload:
+  const payload = {
+    name: d.name,
+    class: d.cls,
+    subject: d.sub,
+    score: d.score,
+    total: d.total,
+    percent: d.percent,
+    cheat_count: d.cheat,
+    elapsed_time: d.elapsed,
+    exam_month: d.exam_month, // Dynamic admin belgilagan oy nomi (Masalan: "May oyi")
+    created_at: new Date().toISOString()
+  };
+
+  // 401 xatoligini oldini oluvchi to'g'ri so'rov sarlavhalari
+  fetch("https://uoimvtnfnioujwgixqba.supabase.co/functions/v1/save-result", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': CONFIG.SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + CONFIG.SUPABASE_ANON_KEY
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(async res => {
+    if (res.ok) {
+      console.log('[Supabase] Natija bazaga muvaffaqiyatli yozildi!');
+    } else {
+      const t = await res.text().catch(() => '');
+      console.warn('[Supabase] Xatolik yuz berdi:', res.status, t);
+    }
+  })
+  .catch(err => console.warn('[Supabase] Fetch ulanish xatosi:', err));
+
+  // Telegram guruhga hisobot yuborish qismi (o'zgarishsiz qoldi)
+  const tgText = `📊 *YANGI TEST NATIJASI*\n\n👤 *O'quvchi:* ${d.name}\n🏫 *Sinf:* ${d.cls}\n📚 *Fan:* ${d.sub}\n✅ *To'g'ri:* ${d.score} / ${d.total}\n📈 *Foiz:* ${d.percent}%\n⏱ *Sarflangan vaqt:* ${d.elapsed}\n⚠️ *Chetlanish:* ${d.cheat} marta\n🗓 *Oy:* ${d.exam_month || ''}\n🕒 *Sana:* ${d.time}`;
+  
+  fetch(`https://api.telegram.org/bot${CONFIG.TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CONFIG.TG_CHAT, text: tgText, parse_mode: 'Markdown' })
+  }).catch(() => {});
+}
 renderRecentResults();
 applySettingsToTestSetup();
 checkForResumeSession();
