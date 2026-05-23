@@ -6,7 +6,7 @@ const CONFIG = {
   TG_CHAT:     "727716224",
   SHEET_CSV:   "https://docs.google.com/spreadsheets/d/e/2PACX-1vT80cxkCgcYdA0OqUOTkrLHeq-wp5MU29ullRUnuTX8L5IM3F3GIxdLtgbJxFrt18unljnQgdaoyarJ/pub?output=csv",
   SUPABASE_URL:"https://uoimvtnfnioujwgixqba.supabase.co/functions/v1/save-result",
-  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvaW12dG5mbmlvdWp3Z2l4cWJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MjA1MDAwMDAwMH0.PLACEHOLDER",
+  SUPABASE_ANON_KEY: "sb_publishable_Ph5ai-lNFmbKlQ0tWY6EjA_-nStNhfC",
   // ⬆️ Bu yerga Supabase Dashboard → Settings → API → anon/public kalitini joylashtiring
   STORAGE_KEY: "ustoz_pro_v60",
   SESSION_KEY: "ustoz_pro_session_v4",
